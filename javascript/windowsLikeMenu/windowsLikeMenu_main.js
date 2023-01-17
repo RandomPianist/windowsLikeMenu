@@ -161,6 +161,8 @@ var Menu = function(dados) {
 	var menuEscId = -1;
 
 	var menuLoad = function() {
+		menuAtalSub = new Array();
+		menuAtalSubF = new Array();
 		var resultado = menuCriar(menuLib, false, 0, 1, [], []);
 		document.body.innerHTML = "<div>" + resultado + "</div><div class = 'menuRes' id = 'menuRes'>" + menuResCorpo + "</div>";
 		document.getElementById("menuRes").style.height = (window.innerHeight - 68) + "px";
@@ -371,8 +373,8 @@ var Menu = function(dados) {
 		if (maior > 2 || cont == 0) largura += parseInt(margem * 1.5);
 		var aux, span;
 		var soma_larguras = 0;
-		for (var i = 0; i < larguras.length; i++) soma_larguras += larguras[i];
-		if (recuo != 0 && soma_larguras + largura > window.innerWidth / 1.2) recuo = (largura * -1) - parseInt(margem / 4);
+		for (var i = 0; i < larguras.length; i++) soma_larguras += menuLimCem(larguras[i]);
+		if (recuo != 0 && soma_larguras + menuLimCem(largura) > window.innerWidth / 2.35) recuo = (menuLimCem(largura) * -1) - parseInt(margem / 4);
 		if (sub) {
 			if (cont >= arr.length) {
 				maior = 0;
@@ -380,7 +382,7 @@ var Menu = function(dados) {
 					if (arr[i]["texto"].length > maior) maior = arr[i]["texto"].length;
 				}
 				var larguraAux = parseInt(1.0775194 * (5.5813953 * maior + 33.6744186) - 12.0465116) + margem;
-				aux = recuo == 0 ? "submenu' style = 'width:" + menuLimCem(larguraAux) + "px" : "submenu' style = 'left:" + recuo + "px;width:" + menuLimCem(largura) + "px";
+				aux = recuo == 0 ? "submenu' style = 'width:" + menuLimCem(larguraAux) + "px" : "submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px";
 			} else aux = recuo != 0 ? "submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px" : "submenu' style = 'width:" + menuLimCem(largura) + "px";
 			aux += ";z-index:" + (idsub.length + 1);
 			if (nivel == 2) aux += ";margin-top:2px";
@@ -503,7 +505,7 @@ var Menu = function(dados) {
 	}
 	
 	var menuLimCem = function(val) {
-		if (val < 100) val = 100;
+		if (val > 0 && val < 100) val = 100;
 		return val;
 	}
 
