@@ -799,6 +799,7 @@ var Menu = function(dados) {
 		aux = aux[arr[arr.length - 1]];
 		aux["desativado"] = !ativo;
 		menuLoad();
+		menuListaDesativados = new Array();
 	}
 }
 
