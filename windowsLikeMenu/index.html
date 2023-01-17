@@ -1,0 +1,152 @@
+<!--
+WINDOWS LIKE MENU © 2023
+Desenvolvido por Reynolds Costa, no Notepad++
+
+O uso é permitido; a comercialização, proibida.
+-->
+
+<html>
+	<head>
+		<meta charset = "utf-8" />
+		<title>Windows Like Menu</title>
+		<link rel = "stylesheet" type = "text/css" href = "css/estilo.css" />
+		<script language = "JavaScript" type = "text/javascript" src = "javascript/windowsLikeMenu/windowsLikeMenu_func.js"></script>
+		<script language = "JavaScript" type = "text/javascript" src = "javascript/windowsLikeMenu/windowsLikeMenu_main_mini.js"></script>
+		<script language = "JavaScript" type = "text/javascript" src = "https://randompianist.github.io/combinarTeclas/javascript/combinarTeclas/combinarTeclas_main_mini.js"></script>
+		<script language = "JavaScript" type = "text/javascript" src = "javascript/exemplo.js"></script>
+	</head>
+	<body>
+		<div class = "bloco" style = "margin-bottom:40px">
+			<a name = "sobre">
+				<h1>
+					Instruções de uso:
+				</h1>
+			</a>
+			<p class = "cod">
+				================================
+				<br />
+				| NÃO COMERCIALIZE ESSE SCRIPT |
+				<br />
+				================================
+			</p>
+			<p>
+				WINDOWS LIKE MENU, por Reynolds Costa
+			</p>
+			<p>
+				Esse script tem a finalidade de simular um menu como o do S.O. Windows, incluindo comandos de atalho e de seleção com o teclado.
+			</p>
+			<p>
+				Ele faz uso do script previamente publicado <a href = "https://randompianist.github.io/combinarTeclas/" target = "_blanket" class = "lnk">combinarTeclas</a>.
+			</p>
+			<p>
+				Para usá-lo, copie os arquivos <span class = "cod arq">windowsLikeMenu_func.js</span> e <span class = "cod arq">windowsLikeMenu_main_mini.js</span>*
+				<a href = "https://github.com/RandomPianist/windowsLikeMenu" target = "_blanket" class = "lnk">do presente repositório</a>
+				e o arquivo <span class = "cod arq">combinarTeclas_main_mini.js</span>*
+				<a href = "https://github.com/RandomPianist/combinarTeclas" target = "_blanket" class = "lnk">do repositório homônimo</a>
+				e faça conexões com eles no seu html nessa ordem usando o atributo
+				<span class = "cod atr">src</span>
+				da tag
+				<span class = "cod tag">&#60;script&#62;</span>.
+			</p>
+			<p>
+				Depois disso, abaixo dessa conexão, basta instanciar a classe <span class = "cod cls">Menu</span> segundo a sintaxe demonstrada em
+				<a href = "https://randompianist.github.io/windowsLikeMenu/javascript/exemplo.js" target = "_blanket" class = "lnk">exemplo.js</a>.
+			</p>
+			<hr />
+			<table>
+				<tr>
+					<td style = "vertical-align:top">*</td>
+					<td class = "nota">
+						Não é necessário usar os arquivos <span class = "cod arq">windowsLikeMenu_main.js</span> e <span class = "cod arq">combinarTeclas_main.js</span>,
+						mais pesados que suas partes minificadas, disponíveis em seus respectivos repositórios apenas para consulta e para contribuição.
+					</td>
+				</tr>
+			</table>
+		</div>
+		<hr />
+		<div class = "bloco" style = "margin-top:40px">
+			<a name = "reservadas">
+				<h1>
+					Palavras reservadas:
+				</h1>
+			</a>
+			<p>
+				Esse script reserva para si as palavras-chave:
+			</p>
+			<ul class = "reservadas">
+				<li>
+					<b>como classes CSS:</b>
+					<ul class = "cod rev">
+						<li>atalho</li>
+						<li>destaque</li>
+						<li>menu</li>
+						<li>menuRes</li>
+						<li>menu_span</li>
+						<li>menu_item</li>
+						<li>menu_item_des</li>
+						<li>menu_tabela</li>
+						<li>menu_texto</li>
+						<li>menu_margem</li>
+						<li>menu_margemFim1</li>
+						<li>menu_margemFim2</li>
+						<li>menu_open</li>
+						<li>submenu</li>
+					</ul>
+				</li>
+				<li>
+					<b>como ids HTML:</b>
+					<ul>
+						<li>
+							<span class = "cod rev">menu</span>
+						</li>
+						<li>
+							<span class = "cod rev">menuRes</span>
+						</li>
+						<li>
+							<span class = "cod rev">menu_alt</span>
+						</li>
+						<li>
+							<span class = "cod rev">menu_delHover</span>
+						</li>
+						<li>
+							<span class = "cod rev">m</span> e variantes por ele prefixadas
+						</li>
+						<li>
+							<span class = "cod rev">menuC</span> e variantes por ele prefixadas
+						</li>
+						<li>
+							<span class = "cod rev">menu_abrir</span> e variantes por ele prefixadas
+						</li>
+						<li>
+							<span class = "cod rev">submenu</span> e variantes por ele prefixadas
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>como variáveis globais:</b>
+					<ul class = "cod rev">
+						<li>menu</li>
+						<li>combinarTeclas</li>
+					</ul>
+				</li>
+				<li>
+					<b>como funções JavaScript:</b>
+					<ul class = "cod rev">
+						<li>Menu</li>
+						<li>CombinarTeclas</li>
+					</ul>
+				</li>
+			</ul>
+			<p style = "margin-top:-6px">
+				e reescreve as funções:
+			</p>
+			<ul class = "arq">
+				<li class = "cod rev">window.onclick</li>
+				<li class = "cod rev">window.onkeydown</li>
+				<li class = "cod rev">window.onkeyup</li>
+				<li class = "cod rev">window.onload</li>
+				<li class = "cod rev">window.onresize</li>
+			</ul>
+		</div>
+	</body>
+</html>

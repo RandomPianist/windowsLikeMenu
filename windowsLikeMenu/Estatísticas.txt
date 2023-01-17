@@ -1,0 +1,33 @@
+QUANTO ÀS LINHAS
+
+Biblioteca vs. explicações
+
+        859  linhas da biblioteca   (70%)
+        367  linhas das explicações (30%)
+      ------
+total  1226
+
+Linguagens
+
+        152  HTML       (12,4%)
+         76  CSS        ( 6,2%)
+        998  JavaScript (81,4%)
+      ------
+total  1226
+
+QUANTO AO TAMANHO
+
+Biblioteca vs. explicações
+
+      42271  bytes da biblioteca   (82,3%)
+       9099  bytes das explicações (17,7%)
+     -------
+total 51370 (50,2 kB)
+
+Linguagens
+
+       5148  HTML       (10,0%)
+        959  CSS        ( 1,9%)
+      45269  JavaScript (88,1%)
+     -------
+total 51376 (50,2 kB)
