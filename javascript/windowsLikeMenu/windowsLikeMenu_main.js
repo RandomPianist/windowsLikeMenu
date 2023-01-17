@@ -374,7 +374,7 @@ var Menu = function(dados) {
 		var aux, span;
 		var soma_larguras = 0;
 		for (var i = 0; i < larguras.length; i++) soma_larguras += menuLimCem(larguras[i]);
-		if (recuo != 0 && soma_larguras + menuLimCem(largura) > window.innerWidth / 2.35) recuo = (menuLimCem(largura) * -1) - parseInt(margem / 4);
+		if (recuo != 0 && soma_larguras + menuLimCem(largura) > window.innerWidth) recuo = (menuLimCem(largura) * -1) - parseInt(margem / 4);
 		if (sub) {
 			if (cont >= arr.length) {
 				maior = 0;
@@ -414,6 +414,7 @@ var Menu = function(dados) {
 			if (arr[i]["filhos"] !== undefined) {
 				if (sub) {
 					recuo = largura + parseInt(margem * 1.5);
+					if (i == 0) larguras[larguras.length] = recuo;
 					idsub = menuC;
 					if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = idsub.join("_");
 					resultado += ">" +
@@ -442,7 +443,7 @@ var Menu = function(dados) {
 								menuEspacamento(arr[i]["texto"]) +
 							"</a>" +
 						"</span>" +
-					menuCriar(arr[i]["filhos"], true, 0, 2, [i], larguras);
+					menuCriar(arr[i]["filhos"], true, 0, 2, [i], []);
 			} else if (arr[i]["atalho"] !== undefined) {
 				span = menuCalcAtal(arr[i]);
 				if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = menuC.join("_");
