@@ -798,8 +798,8 @@ var Menu = function(dados) {
 		for (var i = 1; i < arr.length - 1; i++) aux = aux[arr[i]]["filhos"];
 		aux = aux[arr[arr.length - 1]];
 		aux["desativado"] = !ativo;
-		menuLoad();
 		menuListaDesativados = new Array();
+		menuLoad();
 	}
 }
 
