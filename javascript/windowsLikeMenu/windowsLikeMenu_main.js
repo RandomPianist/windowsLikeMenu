@@ -311,10 +311,7 @@ var Menu = function(dados) {
 			document.getElementById("menu_abrir" + aux).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
 		}
 		for (var i = 0; i < aux2["filhos"].length; i++) {
-			if (aux2["filhos"][i]["filhos"] !== undefined) {
-				document.getElementById("menu_submenu" + aux + "_" + i).style.display = "none";
-				verMenu("menu_submenu" + aux + "_" + i, false);
-			}
+			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
 		}
 		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
 			menuHasChild = true;
@@ -403,8 +400,16 @@ var Menu = function(dados) {
 					if (arr[i]["texto"].length > maior) maior = arr[i]["texto"].length;
 				}
 				var larguraAux = parseInt(1.0775194 * (5.5813953 * maior + 33.6744186) - 12.0465116) + margem;
-				aux = recuo == 0 ? "menu_submenu' style = 'width:" + menuLimCem(larguraAux) + "px" : "menu_submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px";
-			} else aux = recuo != 0 ? "menu_submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px" : "menu_submenu' style = 'width:" + menuLimCem(largura) + "px";
+				aux = recuo == 0 ?
+					"menu_submenu' style = 'width:" + menuLimCem(larguraAux) + "px"
+				:
+					"menu_submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px"
+				;
+			} else aux = recuo != 0 ?
+				"menu_submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px"
+			:
+				"menu_submenu' style = 'width:" + menuLimCem(largura) + "px"
+			;
 			aux += ";z-index:" + (idsub.length + 1);
 			if (nivel == 2) aux += ";margin-top:2px";
 		} else aux = "menu' id = 'menu";
@@ -473,7 +478,12 @@ var Menu = function(dados) {
 				span = menuCalcAtal(arr[i], nomeMenu);
 				if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = menuC.join("_");
 				resultado += ">" + 
-					"<a href = '" + funcaoC + "' class = '" + classe + "' onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])' id = 'menuC" + menuC.join("_") + "'>" +
+					"<a " +
+						"href = '" + funcaoC + "'" +
+						"class = '" + classe + "'" +
+						"onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])'" +
+						"id = 'menuC" + menuC.join("_") +
+					"'>" +
 						"<table class = 'menu_tabela'>" +
 							"<tr>" +
 								"<td class = 'menu_margem'>" +
@@ -496,7 +506,12 @@ var Menu = function(dados) {
 				span = menuCalcAtal(arr[i], nomeMenu);
 				if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = menuC.join("_");
 				resultado += ">" + 
-					"<a href = '" + funcaoC + "' class = '" + classe + "' onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])' id = 'menuC" + menuC.join("_") + "'>" +
+					"<a " +
+						"href = '" + funcaoC + "'" +
+						"class = '" + classe + "'" +
+						"onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])'" +
+						"id = 'menuC" + menuC.join("_") +
+					"'>" +
 						"<table class = 'menu_tabela'>" +
 							"<tr>" +
 								"<td class = 'menu_margem'>" +
