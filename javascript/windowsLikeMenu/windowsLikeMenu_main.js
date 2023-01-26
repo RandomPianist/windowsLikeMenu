@@ -146,6 +146,8 @@ var Menu = function(dados) {
 	var menuAtal = new Array();
 	var menuAtalSub = new Array();
 	var menuAtalSubF = new Array();
+	var menuAtalSubC = new Array();
+	var menuVisiveis = new Array();
 	var menuListaDesativados = new Array();
 	
 	var menuAberto = false;
@@ -163,6 +165,8 @@ var Menu = function(dados) {
 	var menuLoad = function() {
 		menuAtalSub = new Array();
 		menuAtalSubF = new Array();
+		menuAtalSubC = new Array();
+		menuVisiveis = new Array();
 		var resultado = menuCriar(menuLib, false, 0, 1, [], []);
 		document.body.innerHTML = "<div>" + resultado + "</div><div class = 'menuRes' id = 'menuRes'>" + menuResCorpo + "</div>";
 		document.getElementById("menuRes").style.height = (window.innerHeight - 68) + "px";
@@ -218,6 +222,18 @@ var Menu = function(dados) {
 		}, 100);
 	}
 	
+	var verMenu = function(id, visivel) {
+		document.getElementById(id).style.display = visivel ? "block" : "none";
+		id = id.substring(7);
+		if (!visivel && menuVisiveis.indexOf(id) > -1) {
+			var aux = new Array();
+			for (var i = 0; i < menuVisiveis.length; i++) {
+				if (menuVisiveis[i] != id) aux[aux.length] = menuVisiveis[i];
+			}
+			menuVisiveis = aux;
+		} else if (visivel) menuVisiveis[menuVisiveis.length] = id;
+	}
+	
 	var menuAbrir = function(id, clique, evento) {
 		if (!menuAberto || evento > -1) {
 			menuFechar();
@@ -227,7 +243,7 @@ var Menu = function(dados) {
 					document.getElementsByClassName("menu_span")[i].style.backgroundImage = "linear-gradient(rgb(160,160,160), rgb(200,205,220), rgb(214,214,238))";
 				}
 			}
-			document.getElementById("submenu" + id).style.display = "block";
+			verMenu("submenu" + id, true);
 			menuSelecionado = id;
 			menuSelecionadoSub = menuSelecionado + "_0";
 			menuNivel = 1;
@@ -249,6 +265,7 @@ var Menu = function(dados) {
 	
 	var menuFechar = function() {
 		for (var i = 0; i < document.getElementsByClassName("submenu").length; i++) document.getElementsByClassName("submenu")[i].style.display = "none";
+		menuVisiveis = new Array();
 		for (var i = 0; i < document.getElementsByClassName("menu_span").length; i++) {
 			document.getElementsByClassName("menu_span")[i].style.borderColor = "";
 			document.getElementsByClassName("menu_span")[i].style.backgroundImage = "";
@@ -294,12 +311,15 @@ var Menu = function(dados) {
 			document.getElementById("menu_abrir" + aux).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
 		}
 		for (var i = 0; i < aux2["filhos"].length; i++) {
-			if (aux2["filhos"][i]["filhos"] !== undefined) document.getElementById("submenu" + aux + "_" + i).style.display = "none";
+			if (aux2["filhos"][i]["filhos"] !== undefined) {
+				document.getElementById("submenu" + aux + "_" + i).style.display = "none";
+				verMenu("submenu" + aux + "_" + i, false);
+			}
 		}
 		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
 			menuHasChild = true;
 			menuLast = false;
-			document.getElementById("submenu" + id.join("_")).style.display = "block";
+			verMenu("submenu" + id.join("_"), true);
 			try {
 				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(152,156,168)";
 				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
@@ -326,18 +346,19 @@ var Menu = function(dados) {
 
 	var menuManterAberto = function(id) {
 		for (var i = 0; i < document.getElementsByClassName("submenu").length; i++) document.getElementsByClassName("submenu")[i].style.display = "none";
+		menuVisiveis = new Array();
 		var lista = new Array();
 		for (var i = 0; i < id.length; i++) {
 			var aux = new Array;
 			for (var j = 0; j <= i; j++) aux[j] = id[j];
 			lista[i] = aux.join("_");
 		}
-		for (var i = 0; i < lista.length - 1; i++) document.getElementById("submenu" + lista[i]).style.display = "block";
+		for (var i = 0; i < lista.length - 1; i++) verMenu("submenu" + lista[i], true);
 		menuOverSub(id);
 	}
 	
 	var menuProx = function(id) {
-		document.getElementById("submenu" + id.join("_")).style.display = "block";
+		verMenu("submenu" + id.join("_"), true);
 		id[id.length] = 0;
 		menuOverSub(id);
 	}
@@ -389,7 +410,11 @@ var Menu = function(dados) {
 		} else aux = "menu' id = 'menu";
 		largura -= parseInt(margem * 1.5);
 		resultado = "<ul class = '" + aux + "'";
-		if (sub) resultado += "id = 'submenu" + idsub.join("_") + "'";
+		var nomeMenu = "";
+		if (sub) {
+			nomeMenu = idsub.join("_");
+			resultado += "id = 'submenu" + nomeMenu + "'";
+		}
 		resultado += ">";
 		for (var i = 0; i < arr.length; i++) {
 			var menuC = new Array();
@@ -445,7 +470,7 @@ var Menu = function(dados) {
 						"</span>" +
 					menuCriar(arr[i]["filhos"], true, 0, 2, [i], []);
 			} else if (arr[i]["atalho"] !== undefined) {
-				span = menuCalcAtal(arr[i]);
+				span = menuCalcAtal(arr[i], nomeMenu);
 				if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = menuC.join("_");
 				resultado += ">" + 
 					"<a href = '" + funcaoC + "' class = '" + classe + "' onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])' id = 'menuC" + menuC.join("_") + "'>" +
@@ -468,7 +493,7 @@ var Menu = function(dados) {
 					"</a>";
 				menuTesteCombo[arr[i]["funcao"]] = arr[i]["atalho"];
 			} else {
-				span = menuCalcAtal(arr[i]);
+				span = menuCalcAtal(arr[i], nomeMenu);
 				if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = menuC.join("_");
 				resultado += ">" + 
 					"<a href = '" + funcaoC + "' class = '" + classe + "' onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])' id = 'menuC" + menuC.join("_") + "'>" +
@@ -490,13 +515,14 @@ var Menu = function(dados) {
 		return resultado;
 	}
 
-	var menuCalcAtal = function(lista) {
+	var menuCalcAtal = function(lista, nome) {
 		var span = "<span>";
 		if (lista["letraAlt"] !== undefined && !lista["desativado"]) {
 			span = lista["texto"].substring(0, lista["letraAlt"]);
 			if (menuAtalSub.indexOf(lista["texto"].substring(lista["letraAlt"], lista["letraAlt"] + 1).toUpperCase()) == -1) {
 				menuAtalSub[menuAtalSub.length] = lista["texto"].substring(lista["letraAlt"], lista["letraAlt"] + 1).toUpperCase();
 				menuAtalSubF[menuAtalSubF.length] = lista["funcao"];
+				menuAtalSubC[menuAtalSubC.length] = nome;
 			} else console.error('Ocorreu um erro ao instanciar os atalhos.\nHá repetições no parâmetro "letraAlt".');
 			span += "</span><span class = 'menu_letraAtal'>" + lista["texto"].substring(lista["letraAlt"], lista["letraAlt"] + 1) + "</span><span>";
 			span += lista["texto"].substring(lista["letraAlt"] + 1);
@@ -680,7 +706,7 @@ var Menu = function(dados) {
 		var sel = menuSelecionadoSub.toString().split("_");
 		if (document.getElementById("menu_alt").innerHTML != "") {
 			for (var i = 0; i < menuAtalSub.length; i++) {
-				if (menuCod[event.keyCode] == menuAtalSub[i]) {
+				if (menuCod[event.keyCode] == menuAtalSub[i] && menuVisiveis.indexOf(menuAtalSubC[i]) > -1) {
 					feito = true;
 					menuFimAlt();
 					menuFechar();
@@ -700,7 +726,7 @@ var Menu = function(dados) {
 				if (sel[menuNivel] < 0) sel[menuNivel] = menuNivelLim;
 				else if (sel[menuNivel] > menuNivelLim) sel[menuNivel] = 0;
 				if (menuEscId > -1) {
-					document.getElementById("submenu" + menuEscId).style.display = "block";
+					verMenu("submenu" + menuEscId, true);
 					sel[menuNivel] = 0;
 					menuEscId = -1;
 				}
@@ -725,6 +751,7 @@ var Menu = function(dados) {
 			} else if (event.keyCode == 27) {
 				if (menuEscId == -1) {
 					for (var i = 0; i < document.getElementsByClassName("submenu").length; i++) document.getElementsByClassName("submenu")[i].style.display = "none";
+					menuVisiveis = new Array();
 					menuEscId = menuSelecionado;
 					menuECom = false;
 				} else menuFimAlt();
@@ -751,7 +778,7 @@ var Menu = function(dados) {
 						sel = aux;
 						if (sel.length > 1) {
 							menuOverSub(sel);
-							document.getElementById("submenu" + sel.join("_")).style.display = "none";
+							verMenu("submenu" + sel.join("_"), false);
 						} else menuSelecionar(-1);
 					} else menuProx(sel);
 				}
