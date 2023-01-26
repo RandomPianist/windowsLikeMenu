@@ -174,7 +174,7 @@ var Menu = function(dados) {
 	
 	var menuFimAlt = function() {
 		menuFechar();
-		for (var i = 0; i < menuLib.length; i++) document.getElementById("m" + i).innerHTML = menuLib[i]["texto"];
+		for (var i = 0; i < menuLib.length; i++) document.getElementById("menu_m" + i).innerHTML = menuLib[i]["texto"];
 		document.getElementById("menu_alt").innerHTML = "";
 	}
 	
@@ -212,11 +212,11 @@ var Menu = function(dados) {
 		setTimeout(function() {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
-					document.getElementById("m" + i).style.borderColor = "rgb(152,156,168)";
-					document.getElementById("m" + i).style.backgroundImage = "linear-gradient(rgb(160,160,160), rgb(200,205,220), rgb(214,214,238))";
+					document.getElementById("menu_m" + i).style.borderColor = "rgb(152,156,168)";
+					document.getElementById("menu_m" + i).style.backgroundImage = "linear-gradient(rgb(160,160,160), rgb(200,205,220), rgb(214,214,238))";
 				} else {
-					document.getElementById("m" + i).style.borderColor = "transparent";
-					document.getElementById("m" + i).style.backgroundImage = "none";
+					document.getElementById("menu_m" + i).style.borderColor = "transparent";
+					document.getElementById("menu_m" + i).style.backgroundImage = "none";
 				}
 			}
 		}, 100);
@@ -224,7 +224,7 @@ var Menu = function(dados) {
 	
 	var verMenu = function(id, visivel) {
 		document.getElementById(id).style.display = visivel ? "block" : "none";
-		id = id.substring(7);
+		id = id.substring(12);
 		if (!visivel && menuVisiveis.indexOf(id) > -1) {
 			var aux = new Array();
 			for (var i = 0; i < menuVisiveis.length; i++) {
@@ -243,7 +243,7 @@ var Menu = function(dados) {
 					document.getElementsByClassName("menu_span")[i].style.backgroundImage = "linear-gradient(rgb(160,160,160), rgb(200,205,220), rgb(214,214,238))";
 				}
 			}
-			verMenu("submenu" + id, true);
+			verMenu("menu_submenu" + id, true);
 			menuSelecionado = id;
 			menuSelecionadoSub = menuSelecionado + "_0";
 			menuNivel = 1;
@@ -264,7 +264,7 @@ var Menu = function(dados) {
 	}
 	
 	var menuFechar = function() {
-		for (var i = 0; i < document.getElementsByClassName("submenu").length; i++) document.getElementsByClassName("submenu")[i].style.display = "none";
+		for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
 		menuVisiveis = new Array();
 		for (var i = 0; i < document.getElementsByClassName("menu_span").length; i++) {
 			document.getElementsByClassName("menu_span")[i].style.borderColor = "";
@@ -312,14 +312,14 @@ var Menu = function(dados) {
 		}
 		for (var i = 0; i < aux2["filhos"].length; i++) {
 			if (aux2["filhos"][i]["filhos"] !== undefined) {
-				document.getElementById("submenu" + aux + "_" + i).style.display = "none";
-				verMenu("submenu" + aux + "_" + i, false);
+				document.getElementById("menu_submenu" + aux + "_" + i).style.display = "none";
+				verMenu("menu_submenu" + aux + "_" + i, false);
 			}
 		}
 		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
 			menuHasChild = true;
 			menuLast = false;
-			verMenu("submenu" + id.join("_"), true);
+			verMenu("menu_submenu" + id.join("_"), true);
 			try {
 				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(152,156,168)";
 				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
@@ -345,7 +345,7 @@ var Menu = function(dados) {
 	}
 
 	var menuManterAberto = function(id) {
-		for (var i = 0; i < document.getElementsByClassName("submenu").length; i++) document.getElementsByClassName("submenu")[i].style.display = "none";
+		for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
 		menuVisiveis = new Array();
 		var lista = new Array();
 		for (var i = 0; i < id.length; i++) {
@@ -353,12 +353,12 @@ var Menu = function(dados) {
 			for (var j = 0; j <= i; j++) aux[j] = id[j];
 			lista[i] = aux.join("_");
 		}
-		for (var i = 0; i < lista.length - 1; i++) verMenu("submenu" + lista[i], true);
+		for (var i = 0; i < lista.length - 1; i++) verMenu("menu_submenu" + lista[i], true);
 		menuOverSub(id);
 	}
 	
 	var menuProx = function(id) {
-		verMenu("submenu" + id.join("_"), true);
+		verMenu("menu_submenu" + id.join("_"), true);
 		id[id.length] = 0;
 		menuOverSub(id);
 	}
@@ -403,8 +403,8 @@ var Menu = function(dados) {
 					if (arr[i]["texto"].length > maior) maior = arr[i]["texto"].length;
 				}
 				var larguraAux = parseInt(1.0775194 * (5.5813953 * maior + 33.6744186) - 12.0465116) + margem;
-				aux = recuo == 0 ? "submenu' style = 'width:" + menuLimCem(larguraAux) + "px" : "submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px";
-			} else aux = recuo != 0 ? "submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px" : "submenu' style = 'width:" + menuLimCem(largura) + "px";
+				aux = recuo == 0 ? "menu_submenu' style = 'width:" + menuLimCem(larguraAux) + "px" : "menu_submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px";
+			} else aux = recuo != 0 ? "menu_submenu' style = 'left:" + menuLimCem(recuo) + "px;width:" + menuLimCem(largura) + "px" : "menu_submenu' style = 'width:" + menuLimCem(largura) + "px";
 			aux += ";z-index:" + (idsub.length + 1);
 			if (nivel == 2) aux += ";margin-top:2px";
 		} else aux = "menu' id = 'menu";
@@ -413,7 +413,7 @@ var Menu = function(dados) {
 		var nomeMenu = "";
 		if (sub) {
 			nomeMenu = idsub.join("_");
-			resultado += "id = 'submenu" + nomeMenu + "'";
+			resultado += "id = 'menu_submenu" + nomeMenu + "'";
 		}
 		resultado += ">";
 		for (var i = 0; i < arr.length; i++) {
@@ -423,7 +423,7 @@ var Menu = function(dados) {
 			var funcaoC = !arr[i]["desativado"] ? "javascript:menu.fim();" + arr[i]["funcao"] : "#";
 			for (var j = 0; j < nivel - 1; j++) menuC[menuC.length] = idsub[j];
 			menuC[menuC.length] = i;
-			if (arr[i]["destacar"]) resultado += "<li class = 'destaque'>" +
+			if (arr[i]["destacar"]) resultado += "<li class = 'menu_destaque'>" +
 					"<table class = 'menu_tabela'>" +
 						"<tr>" +
 							"<td class = 'menu_margem' style = 'width:20px'>" +
@@ -463,7 +463,7 @@ var Menu = function(dados) {
 						"</a>" +
 					menuCriar(arr[i]["filhos"], true, recuo, nivel + 1, idsub, larguras);
 				} else resultado += ">" +
-						"<span class = 'menu_span' onmouseover = 'menu.over(" + i + ");' onclick = 'menu.abrir(" + i + ", true, -1);' id = 'm" + i + "'>" +
+						"<span class = 'menu_span' onmouseover = 'menu.over(" + i + ");' onclick = 'menu.abrir(" + i + ", true, -1);' id = 'menu_m" + i + "'>" +
 							"<a href = '#'>" +
 								menuEspacamento(arr[i]["texto"]) +
 							"</a>" +
@@ -482,7 +482,7 @@ var Menu = function(dados) {
 								"<td class = 'menu_texto'>" +
 									span +
 								"</td>" +
-								"<td class = 'atalho'>" +
+								"<td class = 'menu_atalho'>" +
 									menuEspacamento(menuAtalho(arr[i]["atalho"])) +
 								"</td>" +
 								"<td class = 'menu_margemFim2'>" +
@@ -555,7 +555,7 @@ var Menu = function(dados) {
 			"body {" +
 				"overflow:hidden" +
 			"}" +
-			".menu, .submenu, .menu_tabela td {" +
+			".menu, .menu_submenu, .menu_tabela td {" +
 				"padding:0;" +
 				"margin:0" +
 			"}" +
@@ -590,14 +590,14 @@ var Menu = function(dados) {
 			".menu li a.menu_item_des {" +
 				"color:rgb(109,109,109)" +
 			"}" +
-			".menu .submenu {" +
+			".menu .menu_submenu {" +
 				"display:none" +
 			"}" +
-			".menu .submenu .submenu {" +
+			".menu .menu_submenu .menu_submenu {" +
 				"position:absolute;" +
 				"top:-2px" +
 			"}" +
-			".submenu {" +
+			".menu_submenu {" +
 				"position:absolute;" +
 				"top:24px;" +
 				"left:0px;" +
@@ -610,11 +610,11 @@ var Menu = function(dados) {
 				"list-style-type:none;" +
 				"cursor:default" +
 			"}" +
-			".submenu li {" +
+			".menu_submenu li {" +
 				"display:block;" +
 				"margin:-2px 0" +
 			"}" +	
-			".submenu .destaque {" +
+			".menu_submenu .menu_destaque {" +
 				"margin:-5px 0 -6px" +
 			"}" +
 			"span.menu_span, a.menu_item, a.menu_item_des {" +
@@ -662,7 +662,7 @@ var Menu = function(dados) {
 			"table.menu_tabela td.menu_open {" +
 				"font-size:10px" +
 			"}" +
-			"table.menu_tabela td.atalho, table.menu_tabela td.menu_open {" +
+			"table.menu_tabela td.menu_atalho, table.menu_tabela td.menu_open {" +
 				"text-align:right" +
 			"}" +
 		"</style>" +
@@ -705,6 +705,7 @@ var Menu = function(dados) {
 		var feito = false;
 		var sel = menuSelecionadoSub.toString().split("_");
 		if (document.getElementById("menu_alt").innerHTML != "") {
+			console.log(menuVisiveis);
 			for (var i = 0; i < menuAtalSub.length; i++) {
 				if (menuCod[event.keyCode] == menuAtalSub[i] && menuVisiveis.indexOf(menuAtalSubC[i]) > -1) {
 					feito = true;
@@ -726,7 +727,7 @@ var Menu = function(dados) {
 				if (sel[menuNivel] < 0) sel[menuNivel] = menuNivelLim;
 				else if (sel[menuNivel] > menuNivelLim) sel[menuNivel] = 0;
 				if (menuEscId > -1) {
-					verMenu("submenu" + menuEscId, true);
+					verMenu("menu_submenu" + menuEscId, true);
 					sel[menuNivel] = 0;
 					menuEscId = -1;
 				}
@@ -742,7 +743,7 @@ var Menu = function(dados) {
 							menuAtal[i] = menuLib[i]["texto"].substring(menuLib[i]["letraAlt"], menuLib[i]["letraAlt"] + 1);
 							span += "<u>" + menuAtal[i] + "</u>";
 							span += menuLib[i]["texto"].substring(menuLib[i]["letraAlt"] + 1);
-							document.getElementById("m" + i).innerHTML = span;
+							document.getElementById("menu_m" + i).innerHTML = span;
 						} else menuAtal[i] = "-1";
 					}
 					document.getElementById("menu_alt").innerHTML = "span.menu_letraAtal{text-decoration:underline}";
@@ -750,7 +751,7 @@ var Menu = function(dados) {
 				} else menuFimAlt();
 			} else if (event.keyCode == 27) {
 				if (menuEscId == -1) {
-					for (var i = 0; i < document.getElementsByClassName("submenu").length; i++) document.getElementsByClassName("submenu")[i].style.display = "none";
+					for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
 					menuVisiveis = new Array();
 					menuEscId = menuSelecionado;
 					menuECom = false;
@@ -778,7 +779,7 @@ var Menu = function(dados) {
 						sel = aux;
 						if (sel.length > 1) {
 							menuOverSub(sel);
-							verMenu("submenu" + sel.join("_"), false);
+							verMenu("menu_submenu" + sel.join("_"), false);
 						} else menuSelecionar(-1);
 					} else menuProx(sel);
 				}
