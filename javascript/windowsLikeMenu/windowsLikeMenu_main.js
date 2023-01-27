@@ -314,24 +314,29 @@ var Menu = function(dados) {
 			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
 		}
 		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
-			menuHasChild = true;
-			menuLast = false;
-			verMenu("menu_submenu" + id.join("_"), true);
-			try {
-				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(152,156,168)";
-				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
-			} catch(err) {
-				menuHasChild = false;
+			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
+				menuHasChild = true;
+				menuLast = false;
+				verMenu("menu_submenu" + id.join("_"), true);
+				try {
+					document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(152,156,168)";
+					document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
+				} catch(err) {
+					menuHasChild = false;
+				}
+			} else {
+				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(211,211,211)";
+				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(242,242,242), rgb(229,229,229))";
 			}
 		} else {
 			menuLast = true;
-			if (menuListaDesativados.indexOf(id.join("_")) > -1) {
-				document.getElementById("menuC" + id.join("_")).style.borderColor = "rgb(211,211,211)";
-				document.getElementById("menuC" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(242,242,242), rgb(229,229,229))";
-			} else {
+			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
 				document.getElementById("menuC" + id.join("_")).style.borderColor = "rgb(152,156,168)";
 				document.getElementById("menuC" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
 				menuECom = true;
+			} else {
+				document.getElementById("menuC" + id.join("_")).style.borderColor = "rgb(211,211,211)";
+				document.getElementById("menuC" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(242,242,242), rgb(229,229,229))";
 			}
 		}
 		menuSelecionadoSub = id.join("_");
@@ -720,7 +725,6 @@ var Menu = function(dados) {
 		var feito = false;
 		var sel = menuSelecionadoSub.toString().split("_");
 		if (document.getElementById("menu_alt").innerHTML != "") {
-			console.log(menuVisiveis);
 			for (var i = 0; i < menuAtalSub.length; i++) {
 				if (menuCod[event.keyCode] == menuAtalSub[i] && menuVisiveis.indexOf(menuAtalSubC[i]) > -1) {
 					feito = true;
