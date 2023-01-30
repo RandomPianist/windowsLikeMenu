@@ -148,13 +148,15 @@ var Menu = function(dados) {
 	var menuAtalSubF = new Array();
 	var menuAtalSubC = new Array();
 	var menuVisiveis = new Array();
+	var menuFixar = new Array();
 	var menuListaDesativados = new Array();
-	
+		
 	var menuAberto = false;
 	var menuHasChild = false;
 	var menuLast = true;
 	var menuECom = false;
 	var menuErrAtalho = false;
+	var menuTeclado = false;
 	
 	var menuSelecionado = 0;
 	var menuNivel = 0;
@@ -167,6 +169,7 @@ var Menu = function(dados) {
 		menuAtalSubF = new Array();
 		menuAtalSubC = new Array();
 		menuVisiveis = new Array();
+		menuFixar = new Array();
 		var resultado = menuCriar(menuLib, false, 0, 1, [], []);
 		document.body.innerHTML = "<div>" + resultado + "</div><div class = 'menuRes' id = 'menuRes'>" + menuResCorpo + "</div>";
 		document.getElementById("menuRes").style.height = (window.innerHeight - 68) + "px";
@@ -367,6 +370,7 @@ var Menu = function(dados) {
 	
 	var menuSelecionar = function(novo) {
 		menuSelecionado += novo;
+		menuTeclado = true;
 		if (menuSelecionado < 0) menuSelecionado = menuLib.length - 1;
 		else if (menuSelecionado >= menuLib.length) menuSelecionado = 0;
 		menuCallAbrir(menuSelecionado, true, event.keyCode);
@@ -397,7 +401,12 @@ var Menu = function(dados) {
 		var aux, span;
 		var soma_larguras = 0;
 		for (var i = 0; i < larguras.length; i++) soma_larguras += menuLimCem(larguras[i]);
-		if (recuo != 0 && soma_larguras + menuLimCem(largura) > window.innerWidth) recuo = (menuLimCem(largura) * -1) - parseInt(margem / 4);
+		if (
+			recuo != 0 &&
+			menuFixar.indexOf(idsub[0] + "@" + nivel) == -1 &&
+			soma_larguras + menuLimCem(largura) > window.innerWidth
+		) recuo = (menuLimCem(largura) * -1) - parseInt(margem / 4);
+		else if (idsub.length > 0) menuFixar[menuFixar.length] = idsub[0] + "@" + nivel;
 		if (sub) {
 			if (cont >= arr.length) {
 				maior = 0;
@@ -824,7 +833,8 @@ var Menu = function(dados) {
 	}
 	
 	this.manterAberto = function(id) {
-		menuManterAberto(id);
+		if (!menuTeclado) menuManterAberto(id);
+		else menuTeclado = false;
 	}
 	
 	this.over = function(id) {
