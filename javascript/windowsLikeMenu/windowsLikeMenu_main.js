@@ -1,6 +1,7 @@
 /*
 WINDOWS LIKE MENU © 2023
 Desenvolvido por Reynolds Costa, no Notepad++
+
 O uso é permitido; a comercialização, proibida.
 */
 
@@ -8,6 +9,7 @@ O uso é permitido; a comercialização, proibida.
          ---------------
 Esse é o |==PRINCIPAL==| arquivo dessa biblioteca.
          ---------------
+
 AVISO:
 Não altere se não souber o que está fazendo.
 */
