@@ -412,6 +412,7 @@ var Menu = function(dados) {
 		) recuo = (menuLimCem(largura) * -1) - parseInt(margem / 4);
 		else if (idsub.length > 0) menuFixar[menuFixar.length] = idsub[0] + "@" + nivel;
 		if (sub) {
+			if (recuo < 0) recuo += 4;
 			if (cont >= arr.length) {
 				maior = 0;
 				for (var i = 0; i < arr.length; i++) {
@@ -429,6 +430,7 @@ var Menu = function(dados) {
 				"menu_submenu' style = 'width:" + menuLimCem(largura) + "px"
 			;
 			aux += ";z-index:" + (idsub.length + 1);
+			if (recuo < 0) aux += ";box-shadow:-2px 2px 2px 1px #888888";
 			if (nivel == 2) aux += ";margin-top:2px";
 		} else aux = "menu' id = 'menu";
 		largura -= parseInt(margem * 1.5);
