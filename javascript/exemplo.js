@@ -8,7 +8,7 @@ O uso é permitido; a comercialização, proibida.
 var menu = new Menu([
 	{
 		"texto" : "Navegar",
-		"letraAlt" : 0,
+		"letraAlt" : 0, //Índice da posição do caractere no texto que será destacado e poderá ser pressionado no teclado para executar o comando
 		"filhos" : [
 			{
 				"texto" : "Instruções de uso",
@@ -22,10 +22,10 @@ var menu = new Menu([
 			},
 			{
 				"texto" : "Voltar",
-				"atalho" : [36],
+				"atalho" : [36], //Vetor com posições de combinações de teclas que, ao pressionadas em conjunto, executa a função
 				"letraAlt" : 0,
 				"funcao" : "irPara(2)",
-				"destacar" : true
+				"destacar" : true //Coloca uma barra horizontal acima do item
 			}
 		]
 	},
@@ -71,7 +71,7 @@ var menu = new Menu([
 									{
 										"texto" : "Repositório",
 										"funcao" : "irPara(7)",
-										"desativado" : true
+										"desativado" : true //Desativa o comando
 									},
 									{
 										"texto" : "Explicação",

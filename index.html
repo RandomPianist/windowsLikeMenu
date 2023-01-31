@@ -50,7 +50,23 @@ O uso é permitido; a comercialização, proibida.
 			</p>
 			<p>
 				Depois disso, abaixo dessa conexão, basta instanciar a classe <span class = "cod cls">Menu</span> segundo a sintaxe demonstrada em
-				<a href = "https://randompianist.github.io/windowsLikeMenu/javascript/exemplo.js" target = "_blanket" class = "lnk">exemplo.js</a>.
+				<a href = "javascript/exemplo.js" target = "_blanket" class = "lnk">exemplo.js</a>.
+			</p>
+			<p>
+				Caso necessário, para alterar a disponibilidade de um comando ou de um grupo de comandos no menu durante o funcionamento do seu programa, use a função
+				<span class = "cod var">menu</span><span class = "cod op">.</span><span class = "cod fun">ativacao</span><span class = "cod op">(</span><span class = "cod fatr">id</span><span class = "cod op">,</span><span class = "cod fatr">ativo</span><span class = "cod op">)</span>,
+				na qual o atributo
+				<span class = "cod fatr">id</span>
+				é uma
+				<i>string</i>
+				com os números identificadores do comando separados por
+				<i>underlines</i>
+				e
+				<span class = "cod fatr">ativo</span>
+				é um valor booleano que define se o comando será ativado ou desativado.
+				No menu da presente página, por exemplo, digitar no console o comando
+				<span class = "cod var">menu</span><span class = "cod op">.</span><span class = "cod fun">ativacao</span><span class = "cod op">(</span><span class = "cod txt">"1_0_1_0"</span><span class = "cod op">,</span><span class = "cod bool">false</span><span class = "cod op">)</span>
+				desativará o comando em Redes > GitHub > Jogos > Puzzle.
 			</p>
 			<hr />
 			<table>

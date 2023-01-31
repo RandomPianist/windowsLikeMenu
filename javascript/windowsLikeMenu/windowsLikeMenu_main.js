@@ -223,7 +223,7 @@ var Menu = function(dados) {
 	var menuColorir = function(id, ativo) {
 		var legenda = ativo ? "on" : "off";
 		document.getElementById(id).style.borderColor = menuEstilo["submenu_item"][legenda]["hover"]["border"];
-		document.getElementById(id).style.backgroundImage = menuEstilo["submenu_item"][legenda]["hover"]["background"];
+		document.getElementById(id).style.background = menuEstilo["submenu_item"][legenda]["hover"]["background"];
 	}
 	
 	var menuRecol = function(id, sel, reg) {
@@ -237,7 +237,7 @@ var Menu = function(dados) {
 					reg = el.id;
 				} else if (reg == "") {
 					document.getElementById(el.id).style.borderColor = "transparent";
-					document.getElementById(el.id).style.backgroundImage = "none";
+					document.getElementById(el.id).style.background = "none";
 				}
 			}
 			aux = sel[0];
@@ -254,10 +254,10 @@ var Menu = function(dados) {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
 					document.getElementById("menu_m" + i).style.borderColor = menuEstilo["menu_item"]["active"]["border"];
-					document.getElementById("menu_m" + i).style.backgroundImage = menuEstilo["menu_item"]["active"]["background"];
+					document.getElementById("menu_m" + i).style.background = menuEstilo["menu_item"]["active"]["background"];
 				} else {
 					document.getElementById("menu_m" + i).style.borderColor = "transparent";
-					document.getElementById("menu_m" + i).style.backgroundImage = "none";
+					document.getElementById("menu_m" + i).style.background = "none";
 				}
 			}
 		}, 100);
@@ -281,7 +281,7 @@ var Menu = function(dados) {
 			for (var i = 0; i < document.getElementsByClassName("menu_span").length; i++) {
 				if (i == id) {
 					document.getElementsByClassName("menu_span")[i].style.borderColor = menuEstilo["menu_item"]["active"]["border"];
-					document.getElementsByClassName("menu_span")[i].style.backgroundImage = menuEstilo["menu_item"]["active"]["background"];
+					document.getElementsByClassName("menu_span")[i].style.background = menuEstilo["menu_item"]["active"]["background"];
 				}
 			}
 			verMenu("menu_submenu" + id, true);
@@ -289,8 +289,8 @@ var Menu = function(dados) {
 			menuSelecionadoSub = menuSelecionado + "_0";
 			menuNivel = 1;
 			if (evento > -1) {
-				var resultado = "a.menu_item:hover{border-color:transparent;background-image:none}" +
-					"a.menu_item_des:hover{border-color:transparent;background-image:none}";
+				var resultado = "a.menu_item:hover{border-color:transparent;background:none}" +
+					"a.menu_item_des:hover{border-color:transparent;background:none}";
 				document.getElementById("menu_delHover").innerHTML = resultado;
 				setTimeout(function() {
 					menuAberto = true;
@@ -309,7 +309,7 @@ var Menu = function(dados) {
 		menuVisiveis = new Array();
 		for (var i = 0; i < document.getElementsByClassName("menu_span").length; i++) {
 			document.getElementsByClassName("menu_span")[i].style.borderColor = "";
-			document.getElementsByClassName("menu_span")[i].style.backgroundImage = "";
+			document.getElementsByClassName("menu_span")[i].style.background = "";
 		}
 		menuEstiloLimpar();
 		menuAberto = false;
@@ -329,7 +329,7 @@ var Menu = function(dados) {
 		for (var i = 0; i < 2; i++) {
 			for (var j = 0; j < document.getElementsByClassName(aux[i]).length; j++) {
 				document.getElementsByClassName(aux[i])[j].style.borderColor = "";
-				document.getElementsByClassName(aux[i])[j].style.backgroundImage = "";
+				document.getElementsByClassName(aux[i])[j].style.background = "";
 			}
 		}
 	}
@@ -370,7 +370,7 @@ var Menu = function(dados) {
 			} else menuColorir("menu_abrir" + id.join("_"), false);
 		} else {
 			menuLast = true;
-			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1 ? "on" : "off";
+			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
 			if (ativo) menuECom = true;
 			menuColorir("menuC" + id.join("_"), ativo);
 		}
@@ -635,7 +635,7 @@ var Menu = function(dados) {
 				"border-bottom-color:" + menuEstilo["menu"]["border"] + ";" +
 				"border-bottom-style:solid;" +
 				"border-bottom-width:1px;" +
-				"background-image:" + menuEstilo["menu"]["background"] + ";" +
+				"background:" + menuEstilo["menu"]["background"] + ";" +
 				"font-family:Tahoma;" +
 				"font-size:12.5px;" +
 				"user-select:none" +
@@ -669,7 +669,7 @@ var Menu = function(dados) {
 				"border-style:solid;" +
 				"border-width:0 1px 1px;" +
 				"box-shadow:1px 2px 2px 1px " + menuEstilo["shadow"] + ";" +
-				"background-color:" + menuEstilo["submenu"]["background"] + ";" +
+				"background:" + menuEstilo["submenu"]["background"] + ";" +
 				"list-style-type:none;" +
 				"cursor:default" +
 			"}" +
@@ -693,18 +693,18 @@ var Menu = function(dados) {
 			"}" +
 			"span.menu_span:hover {" +
 				"border-color:" + menuEstilo["menu_item"]["hover"]["border"] + ";" +
-				"background-image:" + menuEstilo["menu_item"]["hover"]["background"] +
+				"background:" + menuEstilo["menu_item"]["hover"]["background"] +
 			"}" +
 			"span.menu_span a {" +
 				"color:" + menuEstilo["menu_item"]["color"] +
 			"}" +
 			"a.menu_item:hover {" +
 				"border-color:" + menuEstilo["submenu_item"]["on"]["hover"]["border"] + ";" +
-				"background-image:" + menuEstilo["submenu_item"]["on"]["hover"]["background"] +
+				"background:" + menuEstilo["submenu_item"]["on"]["hover"]["background"] +
 			"}" +
 			"a.menu_item_des:hover {" +
 				"border-color:" + menuEstilo["submenu_item"]["off"]["hover"]["border"] + ";" +
-				"background-image:" + menuEstilo["submenu_item"]["off"]["hover"]["background"] +
+				"background:" + menuEstilo["submenu_item"]["off"]["hover"]["background"] +
 			"}" +
 			"table.menu_tabela {" +
 				"border-spacing:0;" +

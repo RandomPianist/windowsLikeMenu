@@ -8,14 +8,14 @@ O uso é permitido; a comercialização, proibida.
 body {
 	padding:0;
 	margin:0;
-	background-color:#f1eeee;
+	background:#f1eeee;
 	cursor:default;
 	user-select:none
 }
 
 div.bloco {
 	padding:20px;
-	background-color:#fff;
+	background:#fff;
 	box-shadow:0px 2px 38px 13px rgba(0,0,0,0.22);
 	font-family:Tahoma;
 	font-size:14px;
@@ -61,6 +61,30 @@ span.atr {
 
 span.cls {
 	color:#a92
+}
+
+span.var {
+	color:#311
+}
+
+span.op {
+	color:#054
+}
+
+span.fun {
+	color:#e41
+}
+
+span.fatr {
+	color:#176
+}
+
+span.txt {
+	color:#655
+}
+
+span.bool {
+	color:#2ae
 }
 
 ul.reservadas {
