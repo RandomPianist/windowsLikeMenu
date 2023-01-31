@@ -8,14 +8,14 @@ O uso é permitido; a comercialização, proibida.
 body {
 	padding:0;
 	margin:0;
-	background-color:rgb(241,237,237);
+	background-color:#f1eeee;
 	cursor:default;
 	user-select:none
 }
 
 div.bloco {
 	padding:20px;
-	background-color:FFF;
+	background-color:#fff;
 	box-shadow:0px 2px 38px 13px rgba(0,0,0,0.22);
 	font-family:Tahoma;
 	font-size:14px;
@@ -40,7 +40,7 @@ div.bloco h1 {
 }
 
 a.lnk, span.tag {
-	color:#00F
+	color:#00f
 }
 
 a.lnk {
@@ -56,11 +56,11 @@ a.lnk:hover {
 }
 
 span.atr {
-	color:#F00
+	color:#f00
 }
 
 span.cls {
-	color:rgb(176,157,28)
+	color:#a92
 }
 
 ul.reservadas {

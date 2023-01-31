@@ -19,6 +19,45 @@ var combinarTeclas = new Array();
 var Menu = function(dados) {
 	var menuLib = dados;
 	
+	const menuEstilo = {
+		"menu" : {
+			"border" : "#99a",
+			"background" : "linear-gradient(#e1e6f6, #d4dbee, #e1e6f6)"
+		},
+		"menu_item" : {
+			"color" : "#000",
+			"hover" : {
+				"border" : "#99a",
+				"background" : "linear-gradient(#d4dbee, #e1e6f6, #d4dbee)"
+			},
+			"active" : {
+				"border" : "#99a",
+				"background" : "linear-gradient(#999, #c8cddc, #d6d6ee)"
+			}
+		},
+		"submenu" : {
+			"border" : "#99a",
+			"background" : "#eee"
+		},
+		"submenu_item" : {
+			"on" : {
+				"color" : "#000",
+				"hover" : {
+					"border" : "#99a",
+					"background" : "linear-gradient(#d4dbee, #e1e6f6, #d4dbee)"
+				}
+			},
+			"off" : {
+				"color" : "#666",
+				"hover" : {
+					"border" : "#ccc",
+					"background" : "linear-gradient(#eee, #ddd)"
+				}
+			}
+		},
+		"shadow" : "#888"
+	};
+	
 	const menuCod = {
 		0: "Erro",
 		8: "Backspace",
@@ -188,13 +227,9 @@ var Menu = function(dados) {
 			var aux = ["menuC", "menu_abrir"];
 			for (var j = 0; j < 2; j++) {
 				if (el.id == aux[j] + sel.join("_")) {
-					if (menuListaDesativados.indexOf(sel.join("_")) == -1) {
-						document.getElementById(el.id).style.borderColor = "rgb(152,156,168)";
-						document.getElementById(el.id).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
-					} else {
-						document.getElementById(el.id).style.borderColor = "rgb(211,211,211)";
-						document.getElementById(el.id).style.backgroundImage = "linear-gradient(rgb(242,242,242), rgb(229,229,229))";
-					}
+					var ativo = menuListaDesativados.indexOf(sel.join("_")) == -1 ? "on" : "off";
+					document.getElementById(el.id).style.borderColor = menuEstilo["submenu_item"][ativo]["hover"]["border"];
+					document.getElementById(el.id).style.backgroundImage = menuEstilo["submenu_item"][ativo]["hover"]["background"];
 					reg = el.id;
 				} else if (reg == "") {
 					document.getElementById(el.id).style.borderColor = "transparent";
@@ -204,8 +239,8 @@ var Menu = function(dados) {
 			aux = sel[0];
 			for (var j = 1; j < sel.length - 1; j++) {
 				aux += "_" + sel[j];
-				document.getElementById("menu_abrir" + aux).style.borderColor = "rgb(152,156,168)";
-				document.getElementById("menu_abrir" + aux).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
+				document.getElementById("menu_abrir" + aux).style.borderColor = menuEstilo["submenu_item"]["on"]["hover"]["border"];
+				document.getElementById("menu_abrir" + aux).style.backgroundImage = menuEstilo["submenu_item"]["on"]["hover"]["background"];
 			}
 		}
 	}
@@ -215,8 +250,8 @@ var Menu = function(dados) {
 		setTimeout(function() {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
-					document.getElementById("menu_m" + i).style.borderColor = "rgb(152,156,168)";
-					document.getElementById("menu_m" + i).style.backgroundImage = "linear-gradient(rgb(160,160,160), rgb(200,205,220), rgb(214,214,238))";
+					document.getElementById("menu_m" + i).style.borderColor = menuEstilo["menu_item"]["active"]["border"];
+					document.getElementById("menu_m" + i).style.backgroundImage = menuEstilo["menu_item"]["active"]["background"];
 				} else {
 					document.getElementById("menu_m" + i).style.borderColor = "transparent";
 					document.getElementById("menu_m" + i).style.backgroundImage = "none";
@@ -242,8 +277,8 @@ var Menu = function(dados) {
 			menuFechar();
 			for (var i = 0; i < document.getElementsByClassName("menu_span").length; i++) {
 				if (i == id) {
-					document.getElementsByClassName("menu_span")[i].style.borderColor = "rgb(152,156,168)";
-					document.getElementsByClassName("menu_span")[i].style.backgroundImage = "linear-gradient(rgb(160,160,160), rgb(200,205,220), rgb(214,214,238))";
+					document.getElementsByClassName("menu_span")[i].style.borderColor = menuEstilo["menu_item"]["active"]["border"];
+					document.getElementsByClassName("menu_span")[i].style.backgroundImage = menuEstilo["menu_item"]["active"]["background"];
 				}
 			}
 			verMenu("menu_submenu" + id, true);
@@ -310,8 +345,8 @@ var Menu = function(dados) {
 		for (var i = 1; i < id.length - 1; i++) {
 			aux += "_" + id[i];
 			aux2 = aux2["filhos"][id[i]];
-			document.getElementById("menu_abrir" + aux).style.borderColor = "rgb(152,156,168)";
-			document.getElementById("menu_abrir" + aux).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
+			document.getElementById("menu_abrir" + aux).style.borderColor = menuEstilo["submenu_item"]["on"]["hover"]["border"];
+			document.getElementById("menu_abrir" + aux).style.backgroundImage = menuEstilo["submenu_item"]["on"]["hover"]["background"];
 		}
 		for (var i = 0; i < aux2["filhos"].length; i++) {
 			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
@@ -326,25 +361,21 @@ var Menu = function(dados) {
 					if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
 				}
 				try {
-					document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(152,156,168)";
-					document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
+					document.getElementById("menu_abrir" + id.join("_")).style.borderColor = menuEstilo["submenu_item"]["on"]["hover"]["border"];
+					document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = menuEstilo["submenu_item"]["on"]["hover"]["background"];
 				} catch(err) {
 					menuHasChild = false;
 				}
 			} else {
-				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = "rgb(211,211,211)";
-				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(242,242,242), rgb(229,229,229))";
+				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = menuEstilo["submenu_item"]["off"]["hover"]["border"];
+				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = menuEstilo["submenu_item"]["off"]["hover"]["background"];
 			}
 		} else {
 			menuLast = true;
-			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
-				document.getElementById("menuC" + id.join("_")).style.borderColor = "rgb(152,156,168)";
-				document.getElementById("menuC" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))";
-				menuECom = true;
-			} else {
-				document.getElementById("menuC" + id.join("_")).style.borderColor = "rgb(211,211,211)";
-				document.getElementById("menuC" + id.join("_")).style.backgroundImage = "linear-gradient(rgb(242,242,242), rgb(229,229,229))";
-			}
+			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1 ? "on" : "off";
+			document.getElementById("menuC" + id.join("_")).style.borderColor = menuEstilo["submenu_item"][ativo]["hover"]["border"];
+			document.getElementById("menuC" + id.join("_")).style.backgroundImage = menuEstilo["submenu_item"][ativo]["hover"]["background"];
+			if (menuListaDesativados.indexOf(id.join("_")) == -1) menuECom = true;
 		}
 		menuSelecionadoSub = id.join("_");
 		aux = menuLib[id[0]]["filhos"];
@@ -430,7 +461,7 @@ var Menu = function(dados) {
 				"menu_submenu' style = 'width:" + menuLimCem(largura) + "px"
 			;
 			aux += ";z-index:" + (idsub.length + 1);
-			if (recuo < 0) aux += ";box-shadow:-2px 2px 2px 1px #888888";
+			if (recuo < 0) aux += ";box-shadow:-2px 2px 2px 1px " + menuEstilo["shadow"];
 			if (nivel == 2) aux += ";margin-top:2px";
 		} else aux = "menu' id = 'menu";
 		largura -= parseInt(margem * 1.5);
@@ -585,7 +616,7 @@ var Menu = function(dados) {
 		return resultado.join("+");
 	}
 
-	var menuEstilo = function() {
+	var menuEstiloCriar = function() {
 		return "<style type = 'text/css'>" +
 			"body {" +
 				"overflow:hidden" +
@@ -604,10 +635,10 @@ var Menu = function(dados) {
 			".menu {" +
 				"height:25px;" +
 				"padding-top:1px;" +
-				"border-bottom-color:rgb(152,156,168);" +
+				"border-bottom-color:" + menuEstilo["menu"]["border"] + ";" +
 				"border-bottom-style:solid;" +
 				"border-bottom-width:1px;" +
-				"background-image:linear-gradient(rgb(225,230,246), rgb(212,219,238), rgb(225,230,246));" +
+				"background-image:" + menuEstilo["menu"]["background"] + ";" +
 				"font-family:Tahoma;" +
 				"font-size:12.5px;" +
 				"user-select:none" +
@@ -618,12 +649,12 @@ var Menu = function(dados) {
 			"}" +
 			".menu li a {" +
 				"display:block;" +
-				"color:000;" +
 				"text-decoration:none;" +
+				"color:" + menuEstilo["submenu_item"]["on"]["color"] + ";" +
 				"cursor:default" +
 			"}" +
 			".menu li a.menu_item_des {" +
-				"color:rgb(109,109,109)" +
+				"color:" + menuEstilo["submenu_item"]["off"]["color"] +
 			"}" +
 			".menu .menu_submenu {" +
 				"display:none" +
@@ -637,11 +668,11 @@ var Menu = function(dados) {
 				"top:24px;" +
 				"left:0px;" +
 				"padding:4px 0;" +
-				"border-color:rgb(152,156,168);" +
+				"border-color:" + menuEstilo["submenu"]["border"] + ";" +
 				"border-style:solid;" +
 				"border-width:0 1px 1px;" +
-				"box-shadow:1px 2px 2px 1px #888888;" +
-				"background-color:rgb(240,240,240);" +
+				"box-shadow:1px 2px 2px 1px " + menuEstilo["shadow"] + ";" +
+				"background-color:" + menuEstilo["submenu"]["background"] + ";" +
 				"list-style-type:none;" +
 				"cursor:default" +
 			"}" +
@@ -663,13 +694,20 @@ var Menu = function(dados) {
 				"padding:3px 8px;" +
 				"border-radius:5px" +
 			"}" +
-			"span.menu_span:hover, a.menu_item:hover {" +
-				"border-color:rgb(152,156,168);" +
-				"background-image:linear-gradient(rgb(212,219,238), rgb(225,230,246), rgb(212,219,238))" +
+			"span.menu_span:hover {" +
+				"border-color:" + menuEstilo["menu_item"]["hover"]["border"] + ";" +
+				"background-image:" + menuEstilo["menu_item"]["hover"]["background"] +
+			"}" +
+			"span.menu_span a {" +
+				"color:" + menuEstilo["menu_item"]["color"] +
+			"}" +
+			"a.menu_item:hover {" +
+				"border-color:" + menuEstilo["submenu_item"]["on"]["hover"]["border"] + ";" +
+				"background-image:" + menuEstilo["submenu_item"]["on"]["hover"]["background"] +
 			"}" +
 			"a.menu_item_des:hover {" +
-				"border-color:rgb(211,211,211);" +
-				"background-image:linear-gradient(rgb(242,242,242), rgb(229,229,229))" +
+				"border-color:" + menuEstilo["submenu_item"]["off"]["hover"]["border"] + ";" +
+				"background-image:" + menuEstilo["submenu_item"]["off"]["hover"]["background"] +
 			"}" +
 			"table.menu_tabela {" +
 				"border-spacing:0;" +
@@ -681,7 +719,7 @@ var Menu = function(dados) {
 			"}" +
 			"table.menu_tabela td.menu_margem {" +
 				"width:19px;" +
-				"border-right-color:rgb(152,156,168);" +
+				"border-right-color:" + menuEstilo["menu"]["border"] + ";" +
 				"border-right-style:solid;" +
 				"border-right-width:1px" +
 			"}" +
@@ -707,7 +745,7 @@ var Menu = function(dados) {
 	
 	this.callLoad = function() {
 		menuResCorpo = document.body.innerHTML;
-		document.head.innerHTML += menuEstilo();
+		document.head.innerHTML += menuEstiloCriar();
 		menuLoad();
 		setTimeout(function() {
 			var erroMsg = "Ocorreu um erro ao instanciar os atalhos.\n";
