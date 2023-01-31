@@ -220,6 +220,12 @@ var Menu = function(dados) {
 		document.getElementById("menu_alt").innerHTML = "";
 	}
 	
+	var menuColorir = function(id, ativo) {
+		var legenda = ativo ? "on" : "off";
+		document.getElementById(id).style.borderColor = menuEstilo["submenu_item"][legenda]["hover"]["border"];
+		document.getElementById(id).style.backgroundImage = menuEstilo["submenu_item"][legenda]["hover"]["background"];
+	}
+	
 	var menuRecol = function(id, sel, reg) {
 		var classes = ["menu_item", "menu_item_des"];
 		for (var i = 0; i < 1; i++) {
@@ -227,9 +233,7 @@ var Menu = function(dados) {
 			var aux = ["menuC", "menu_abrir"];
 			for (var j = 0; j < 2; j++) {
 				if (el.id == aux[j] + sel.join("_")) {
-					var ativo = menuListaDesativados.indexOf(sel.join("_")) == -1 ? "on" : "off";
-					document.getElementById(el.id).style.borderColor = menuEstilo["submenu_item"][ativo]["hover"]["border"];
-					document.getElementById(el.id).style.backgroundImage = menuEstilo["submenu_item"][ativo]["hover"]["background"];
+					menuColorir(el.id, menuListaDesativados.indexOf(sel.join("_")) == -1);
 					reg = el.id;
 				} else if (reg == "") {
 					document.getElementById(el.id).style.borderColor = "transparent";
@@ -239,8 +243,7 @@ var Menu = function(dados) {
 			aux = sel[0];
 			for (var j = 1; j < sel.length - 1; j++) {
 				aux += "_" + sel[j];
-				document.getElementById("menu_abrir" + aux).style.borderColor = menuEstilo["submenu_item"]["on"]["hover"]["border"];
-				document.getElementById("menu_abrir" + aux).style.backgroundImage = menuEstilo["submenu_item"]["on"]["hover"]["background"];
+				menuColorir("menu_abrir" + aux, true);
 			}
 		}
 	}
@@ -345,8 +348,7 @@ var Menu = function(dados) {
 		for (var i = 1; i < id.length - 1; i++) {
 			aux += "_" + id[i];
 			aux2 = aux2["filhos"][id[i]];
-			document.getElementById("menu_abrir" + aux).style.borderColor = menuEstilo["submenu_item"]["on"]["hover"]["border"];
-			document.getElementById("menu_abrir" + aux).style.backgroundImage = menuEstilo["submenu_item"]["on"]["hover"]["background"];
+			menuColorir("menu_abrir" + aux, true);
 		}
 		for (var i = 0; i < aux2["filhos"].length; i++) {
 			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
@@ -361,21 +363,16 @@ var Menu = function(dados) {
 					if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
 				}
 				try {
-					document.getElementById("menu_abrir" + id.join("_")).style.borderColor = menuEstilo["submenu_item"]["on"]["hover"]["border"];
-					document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = menuEstilo["submenu_item"]["on"]["hover"]["background"];
+					menuColorir("menu_abrir" + id.join("_"), true);
 				} catch(err) {
 					menuHasChild = false;
 				}
-			} else {
-				document.getElementById("menu_abrir" + id.join("_")).style.borderColor = menuEstilo["submenu_item"]["off"]["hover"]["border"];
-				document.getElementById("menu_abrir" + id.join("_")).style.backgroundImage = menuEstilo["submenu_item"]["off"]["hover"]["background"];
-			}
+			} else menuColorir("menu_abrir" + id.join("_"), false);
 		} else {
 			menuLast = true;
 			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1 ? "on" : "off";
-			document.getElementById("menuC" + id.join("_")).style.borderColor = menuEstilo["submenu_item"][ativo]["hover"]["border"];
-			document.getElementById("menuC" + id.join("_")).style.backgroundImage = menuEstilo["submenu_item"][ativo]["hover"]["background"];
-			if (menuListaDesativados.indexOf(id.join("_")) == -1) menuECom = true;
+			if (ativo) menuECom = true;
+			menuColorir("menuC" + id.join("_"), ativo);
 		}
 		menuSelecionadoSub = id.join("_");
 		aux = menuLib[id[0]]["filhos"];
