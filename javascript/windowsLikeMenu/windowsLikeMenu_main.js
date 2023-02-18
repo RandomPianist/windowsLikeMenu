@@ -252,7 +252,6 @@ var Menu = function(dados) {
 
 	var menuCallAbrir = function(id, clique, evento) {
 		menuAbrir(id, true, event.keyCode);
-		//
 		setTimeout(function() {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
