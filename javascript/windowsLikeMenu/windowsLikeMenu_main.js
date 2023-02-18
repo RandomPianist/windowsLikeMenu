@@ -870,10 +870,8 @@ var Menu = function(dados) {
 							aux = new Array();
 							for (var i = 0; i < sel.length - 1; i++) aux[i] = sel[i];
 							sel = aux;
-							if (sel.length > 1) {
-								menuOverSub(sel);
-								verMenu("menu_submenu" + sel.join("_"), false);
-							} else menuSelecionar(-1);
+							if (sel.length > 1) menuOverSub(sel);
+							else menuSelecionar(-1);
 						} else menuProx(sel);
 					} else {
 						menuSelecionar(event.keyCode - 38);
