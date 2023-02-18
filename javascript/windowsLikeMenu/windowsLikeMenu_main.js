@@ -196,6 +196,7 @@ var Menu = function(dados) {
 	var menuECom = false;
 	var menuErrAtalho = false;
 	var menuTeclado = false;
+	var mostrando = true;
 	
 	var menuSelecionado = 0;
 	var menuNivel = 0;
@@ -216,6 +217,7 @@ var Menu = function(dados) {
 	
 	var menuFimAlt = function() {
 		menuFechar();
+		menuTeclado = false;
 		for (var i = 0; i < menuLib.length; i++) document.getElementById("menu_m" + i).innerHTML = menuLib[i]["texto"];
 		document.getElementById("menu_alt").innerHTML = "";
 	}
@@ -250,6 +252,7 @@ var Menu = function(dados) {
 
 	var menuCallAbrir = function(id, clique, evento) {
 		menuAbrir(id, true, event.keyCode);
+		//
 		setTimeout(function() {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
@@ -357,7 +360,7 @@ var Menu = function(dados) {
 			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
 				menuHasChild = true;
 				menuLast = false;
-				verMenu("menu_submenu" + id.join("_"), true);
+				if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
 				var lista = document.getElementsByClassName("menu_submenu");
 				for (var i = 0; i < lista.length; i++) {
 					if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
@@ -793,38 +796,59 @@ var Menu = function(dados) {
 			if ((event.keyCode == 38 || event.keyCode == 40) && menuSelecionadoSub != "") {
 				for (var i = 0; i < sel.length; i++) sel[i] = parseInt(sel[i]);
 				sel[menuNivel] += event.keyCode - 39;
-				if (sel[menuNivel] < 0) sel[menuNivel] = menuNivelLim;
-				else if (sel[menuNivel] > menuNivelLim) sel[menuNivel] = 0;
-				if (menuEscId > -1) {
-					verMenu("menu_submenu" + menuEscId, true);
-					sel[menuNivel] = 0;
-					menuEscId = -1;
-				}
-				menuOverSub(sel);
-				for (var i = document.getElementsByClassName("menu_item").length - 1; i >= 0; i--) menuRecol(i, sel, "");
-				for (var i = document.getElementsByClassName("menu_item_des").length - 1; i >= 0; i--) menuRecol(i, sel, "");
-			} else if (event.keyCode == 18) {
-				if (!menuAberto) {
-					menuAtal = new Array();
-					for (var i = 0; i < menuLib.length; i++) {
-						if (menuLib[i]["letraAlt"] !== undefined) {
-							span = menuLib[i]["texto"].substring(0, menuLib[i]["letraAlt"]);
-							menuAtal[i] = menuLib[i]["texto"].substring(menuLib[i]["letraAlt"], menuLib[i]["letraAlt"] + 1);
-							span += "<u>" + menuAtal[i] + "</u>";
-							span += menuLib[i]["texto"].substring(menuLib[i]["letraAlt"] + 1);
-							document.getElementById("menu_m" + i).innerHTML = span;
-						} else menuAtal[i] = "-1";
+				var continuar = true;
+				if (sel[menuNivel] < 0) {
+					var indicador = menuSelecionadoSub.split("_");
+					if (indicador.length <= 2) {
+						sel[menuNivel] = 0;
+						continuar = false;
+					} else sel[menuNivel] = menuNivelLim;
+				} else if (sel[menuNivel] > menuNivelLim) sel[menuNivel] = 0;
+				if (continuar) {
+					if (menuEscId > -1) {
+						verMenu("menu_submenu" + menuEscId, true);
+						sel[menuNivel] = 0;
+						menuEscId = -1;
 					}
-					document.getElementById("menu_alt").innerHTML = "span.menu_letraAtal{text-decoration:underline}";
-					menuCallAbrir(0, true, -1);
-				} else menuFimAlt();
-			} else if (event.keyCode == 27) {
-				if (menuEscId == -1) {
-					for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
-					menuVisiveis = new Array();
-					menuEscId = menuSelecionado;
-					menuECom = false;
-				} else menuFimAlt();
+					menuOverSub(sel);
+					for (var i = document.getElementsByClassName("menu_item").length - 1; i >= 0; i--) menuRecol(i, sel, "");
+					for (var i = document.getElementsByClassName("menu_item_des").length - 1; i >= 0; i--) menuRecol(i, sel, "");
+				} else {
+					verMenu("menu_submenu" + indicador[0], false);
+					mostrando = false;
+				}
+				if (event.keyCode == 40 && !mostrando) {
+					menuCallAbrir(parseInt(menuSelecionadoSub.split("_")[0]), true, -1);
+					mostrando = true;
+				}
+			} else if (event.keyCode == 18 || event.keyCode == 27) {
+				mostrando = true;
+				switch(event.keyCode) {
+					case 18:
+						if (!menuAberto) {
+							menuAtal = new Array();
+							for (var i = 0; i < menuLib.length; i++) {
+								if (menuLib[i]["letraAlt"] !== undefined) {
+									span = menuLib[i]["texto"].substring(0, menuLib[i]["letraAlt"]);
+									menuAtal[i] = menuLib[i]["texto"].substring(menuLib[i]["letraAlt"], menuLib[i]["letraAlt"] + 1);
+									span += "<u>" + menuAtal[i] + "</u>";
+									span += menuLib[i]["texto"].substring(menuLib[i]["letraAlt"] + 1);
+									document.getElementById("menu_m" + i).innerHTML = span;
+								} else menuAtal[i] = "-1";
+							}
+							document.getElementById("menu_alt").innerHTML = "span.menu_letraAtal{text-decoration:underline}";
+							menuCallAbrir(0, true, -1);
+						} else menuFimAlt();
+						break;
+					case 27:
+						if (menuEscId == -1) {
+							for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
+							menuVisiveis = new Array();
+							menuEscId = menuSelecionado;
+							menuECom = false;
+						} else menuFimAlt();
+						break;
+				}
 			} else if (menuAberto) {
 				if (event.keyCode == 13) {
 					if (menuECom) {
@@ -841,16 +865,21 @@ var Menu = function(dados) {
 						}, 150);
 					} else menuProx(sel);
 				} else if (event.keyCode == 37 || event.keyCode == 39) {
-					if (!menuHasChild || (event.keyCode == 39 && menuLast)) menuSelecionar(event.keyCode - 38);
-					else if (event.keyCode == 37) {
-						aux = new Array();
-						for (var i = 0; i < sel.length - 1; i++) aux[i] = sel[i];
-						sel = aux;
-						if (sel.length > 1) {
-							menuOverSub(sel);
-							verMenu("menu_submenu" + sel.join("_"), false);
-						} else menuSelecionar(-1);
-					} else menuProx(sel);
+					if (mostrando) {
+						if (!menuHasChild || (event.keyCode == 39 && menuLast)) menuSelecionar(event.keyCode - 38);
+						else if (event.keyCode == 37) {
+							aux = new Array();
+							for (var i = 0; i < sel.length - 1; i++) aux[i] = sel[i];
+							sel = aux;
+							if (sel.length > 1) {
+								menuOverSub(sel);
+								verMenu("menu_submenu" + sel.join("_"), false);
+							} else menuSelecionar(-1);
+						} else menuProx(sel);
+					} else {
+						menuSelecionar(event.keyCode - 38);
+						verMenu("menu_submenu" + menuSelecionadoSub.split("_")[0], false);
+					}
 				}
 			}
 		}
