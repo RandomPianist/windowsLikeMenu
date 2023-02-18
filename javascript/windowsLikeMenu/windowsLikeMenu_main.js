@@ -820,34 +820,29 @@ var Menu = function(dados) {
 					menuCallAbrir(parseInt(menuSelecionadoSub.split("_")[0]), true, -1);
 					mostrando = true;
 				}
-			} else if (event.keyCode == 18 || event.keyCode == 27) {
+			} else if (event.keyCode == 18) {
 				mostrando = true;
-				switch(event.keyCode) {
-					case 18:
-						if (!menuAberto) {
-							menuAtal = new Array();
-							for (var i = 0; i < menuLib.length; i++) {
-								if (menuLib[i]["letraAlt"] !== undefined) {
-									span = menuLib[i]["texto"].substring(0, menuLib[i]["letraAlt"]);
-									menuAtal[i] = menuLib[i]["texto"].substring(menuLib[i]["letraAlt"], menuLib[i]["letraAlt"] + 1);
-									span += "<u>" + menuAtal[i] + "</u>";
-									span += menuLib[i]["texto"].substring(menuLib[i]["letraAlt"] + 1);
-									document.getElementById("menu_m" + i).innerHTML = span;
-								} else menuAtal[i] = "-1";
-							}
-							document.getElementById("menu_alt").innerHTML = "span.menu_letraAtal{text-decoration:underline}";
-							menuCallAbrir(0, true, -1);
-						} else menuFimAlt();
-						break;
-					case 27:
-						if (menuEscId == -1) {
-							for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
-							menuVisiveis = new Array();
-							menuEscId = menuSelecionado;
-							menuECom = false;
-						} else menuFimAlt();
-						break;
-				}
+				if (!menuAberto) {
+					menuAtal = new Array();
+					for (var i = 0; i < menuLib.length; i++) {
+						if (menuLib[i]["letraAlt"] !== undefined) {
+							span = menuLib[i]["texto"].substring(0, menuLib[i]["letraAlt"]);
+							menuAtal[i] = menuLib[i]["texto"].substring(menuLib[i]["letraAlt"], menuLib[i]["letraAlt"] + 1);
+							span += "<u>" + menuAtal[i] + "</u>";
+							span += menuLib[i]["texto"].substring(menuLib[i]["letraAlt"] + 1);
+							document.getElementById("menu_m" + i).innerHTML = span;
+						} else menuAtal[i] = "-1";
+					}
+					document.getElementById("menu_alt").innerHTML = "span.menu_letraAtal{text-decoration:underline}";
+					menuCallAbrir(0, true, -1);
+				} else menuFimAlt();
+			} else if (event.keyCode == 27) {
+				if (menuEscId == -1 && mostrando) {
+					for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
+					menuVisiveis = new Array();
+					menuEscId = menuSelecionado;
+					menuECom = false;
+				} else menuFimAlt();
 			} else if (menuAberto) {
 				if (event.keyCode == 13) {
 					if (menuECom) {
