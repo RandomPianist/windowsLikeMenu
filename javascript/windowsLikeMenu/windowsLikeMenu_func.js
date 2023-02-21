@@ -26,7 +26,9 @@ window.onkeydown = function(e) {
 }
 
 window.onkeyup = function() {
-	menu.keyUp(event);
+	try {
+		menu.keyUp(event);
+	} catch(err) {}
 }
 
 window.onclick = function(e) {

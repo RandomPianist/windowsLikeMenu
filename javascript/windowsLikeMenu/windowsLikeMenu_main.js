@@ -19,6 +19,11 @@ var combinarTeclas = new Array();
 var Menu = function(dados) {
 	var menuLib = dados;
 	
+	for (var i = 0; i < menuLib.length; i++) {
+		if (menuLib[i]["filhos"] === undefined) menuLib[i]["filhos"] = new Array();
+		if (menuLib[i]["desativado"] && menuLib[i]["funcao"] === undefined) menuLib[i]["funcao"] = "";
+	}
+	
 	const menuEstilo = {
 		"menu" : {
 			"border" : "#99a",
@@ -182,6 +187,7 @@ var Menu = function(dados) {
 	var menuResCorpo = "";
 	
 	var menuTesteCombo = new Array();
+	var menuNoF = new Array();
 	var menuAtal = new Array();
 	var menuAtalSub = new Array();
 	var menuAtalSubF = new Array();
@@ -286,7 +292,7 @@ var Menu = function(dados) {
 					document.getElementsByClassName("menu_span")[i].style.background = menuEstilo["menu_item"]["active"]["background"];
 				}
 			}
-			verMenu("menu_submenu" + id, true);
+			if (document.getElementById("menu_submenu" + id).innerHTML != "") verMenu("menu_submenu" + id, true);
 			menuSelecionado = id;
 			menuSelecionadoSub = menuSelecionado + "_0";
 			menuNivel = 1;
@@ -356,32 +362,34 @@ var Menu = function(dados) {
 		for (var i = 0; i < aux2["filhos"].length; i++) {
 			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
 		}
-		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
-			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
-				menuHasChild = true;
-				menuLast = false;
-				if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
-				var lista = document.getElementsByClassName("menu_submenu");
-				for (var i = 0; i < lista.length; i++) {
-					if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
-				}
-				try {
-					menuColorir("menu_abrir" + id.join("_"), true);
-				} catch(err) {
-					menuHasChild = false;
-				}
-			} else menuColorir("menu_abrir" + id.join("_"), false);
-		} else {
-			menuLast = true;
-			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
-			if (ativo) menuECom = true;
-			menuColorir("menuC" + id.join("_"), ativo);
+		if (aux2["filhos"].length > 0) {
+			if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
+				if (menuListaDesativados.indexOf(id.join("_")) == -1) {
+					menuHasChild = true;
+					menuLast = false;
+					if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
+					var lista = document.getElementsByClassName("menu_submenu");
+					for (var i = 0; i < lista.length; i++) {
+						if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
+					}
+					try {
+						menuColorir("menu_abrir" + id.join("_"), true);
+					} catch(err) {
+						menuHasChild = false;
+					}
+				} else menuColorir("menu_abrir" + id.join("_"), false);
+			} else {
+				menuLast = true;
+				var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
+				if (ativo) menuECom = true;
+				menuColorir("menuC" + id.join("_"), ativo);
+			}
+			menuSelecionadoSub = id.join("_");
+			aux = menuLib[id[0]]["filhos"];
+			for (var i = 1; i < id.length - 1; i++) aux = aux[id[i]]["filhos"];
+			menuNivelLim = aux.length - 1;
+			menuNivel = id.length - 1;
 		}
-		menuSelecionadoSub = id.join("_");
-		aux = menuLib[id[0]]["filhos"];
-		for (var i = 1; i < id.length - 1; i++) aux = aux[id[i]]["filhos"];
-		menuNivelLim = aux.length - 1;
-		menuNivel = id.length - 1;
 	}
 
 	var menuManterAberto = function(id) {
@@ -474,6 +482,7 @@ var Menu = function(dados) {
 		for (var i = 0; i < arr.length; i++) {
 			var menuC = new Array();
 			var classe = "menu_item";
+			if (arr[i]["funcao"] !== undefined && nivel == 1) arr[i]["filhos"] = new Array();
 			if (arr[i]["desativado"]) classe += "_des";
 			var funcaoC = !arr[i]["desativado"] ? "javascript:menu.fim();" + arr[i]["funcao"] : "#";
 			for (var j = 0; j < nivel - 1; j++) menuC[menuC.length] = idsub[j];
@@ -517,6 +526,15 @@ var Menu = function(dados) {
 							"</table>" +
 						"</a>" +
 					menuCriar(arr[i]["filhos"], true, recuo, nivel + 1, idsub, larguras);
+				} else if (arr[i]["filhos"].length == 0) {
+					if (arr[i]["desativado"] === undefined || !arr[i]["desativado"]) menuNoF[i] = arr[i]["funcao"];
+					resultado += ">" +
+						"<span class = 'menu_span' onmouseover = 'menu.over(" + i + ");' onclick = 'menu.exec(" + i + ")' id = 'menu_m" + i + "'>" +
+							"<a href = '#'>" +
+								menuEspacamento(arr[i]["texto"]) +
+							"</a>" +
+						"</span>" +
+					menuCriar(arr[i]["filhos"], true, 0, 2, [i], []);
 				} else resultado += ">" +
 						"<span class = 'menu_span' onmouseover = 'menu.over(" + i + ");' onclick = 'menu.abrir(" + i + ", true, -1);' id = 'menu_m" + i + "'>" +
 							"<a href = '#'>" +
@@ -697,6 +715,10 @@ var Menu = function(dados) {
 				"border-color:" + menuEstilo["menu_item"]["hover"]["border"] + ";" +
 				"background:" + menuEstilo["menu_item"]["hover"]["background"] +
 			"}" +
+			"span.menu_span:active {" +
+				"border-color:" + menuEstilo["menu_item"]["active"]["border"] + ";" +
+				"background:" + menuEstilo["menu_item"]["active"]["background"] +
+			"}" +
 			"span.menu_span a {" +
 				"color:" + menuEstilo["menu_item"]["color"] +
 			"}" +
@@ -765,7 +787,7 @@ var Menu = function(dados) {
 	
 	this.keyDown = function(e, event) {
 		if (!menuErrAtalho) comandos.executarFuncao(e, event.keyCode);
-		var span, fun, aux;
+		var span, fun, aux, lista;
 		var feito = false;
 		var sel = menuSelecionadoSub.toString().split("_");
 		if (document.getElementById("menu_alt").innerHTML != "") {
@@ -773,13 +795,20 @@ var Menu = function(dados) {
 				if (menuCod[event.keyCode] == menuAtalSub[i] && menuVisiveis.indexOf(menuAtalSubC[i]) > -1) {
 					feito = true;
 					menuFimAlt();
-					menuFechar();
 					fun = new Function(menuAtalSubF[i]);
 					fun();
 				}
 			}
 			for (var i = 0; i < menuAtal.length; i++) {
-				if (menuCod[event.keyCode] == menuAtal[i].toUpperCase() && !feito) menuOver(i);
+				if (menuCod[event.keyCode] == menuAtal[i].toUpperCase() && !feito) {
+					if (menuNoF[i] !== undefined) {
+						feito = true;
+						menuFimAlt();
+						fun = new Function(menuNoF[i]);
+						fun();
+					} else if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) menuOver(i);
+					else menuFimAlt();
+				}
 			}
 		}
 		if (feito || event.keyCode == 13 || event.keyCode == 18 || event.keyCode == 27 || (event.keyCode >= 37 && event.keyCode <= 40)) {
@@ -819,12 +848,15 @@ var Menu = function(dados) {
 				mostrando = true;
 				if (!menuAberto) {
 					menuAtal = new Array();
+					menuNoF = new Array();
 					for (var i = 0; i < menuLib.length; i++) {
-						if (menuLib[i]["letraAlt"] !== undefined) {
-							span = menuLib[i]["texto"].substring(0, menuLib[i]["letraAlt"]);
-							menuAtal[i] = menuLib[i]["texto"].substring(menuLib[i]["letraAlt"], menuLib[i]["letraAlt"] + 1);
+						lista = menuLib[i];
+						if (lista["letraAlt"] !== undefined) {
+							span = lista["texto"].substring(0, lista["letraAlt"]);
+							menuAtal[i] = lista["texto"].substring(lista["letraAlt"], lista["letraAlt"] + 1);
+							if (lista["funcao"] !== undefined && (lista["desativado"] === undefined || !lista["desativado"])) menuNoF[i] = lista["funcao"];
 							span += "<u>" + menuAtal[i] + "</u>";
-							span += menuLib[i]["texto"].substring(menuLib[i]["letraAlt"] + 1);
+							span += lista["texto"].substring(lista["letraAlt"] + 1);
 							document.getElementById("menu_m" + i).innerHTML = span;
 						} else menuAtal[i] = "-1";
 					}
@@ -833,7 +865,8 @@ var Menu = function(dados) {
 				} else menuFimAlt();
 			} else if (event.keyCode == 27) {
 				if (menuEscId == -1 && mostrando) {
-					for (var i = 0; i < document.getElementsByClassName("menu_submenu").length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
+					lista = document.getElementsByClassName("menu_submenu");
+					for (var i = 0; i < lista.length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
 					menuVisiveis = new Array();
 					menuEscId = menuSelecionado;
 					menuECom = false;
@@ -893,6 +926,15 @@ var Menu = function(dados) {
 		if (!document.getElementById("menu").contains(e.target) && menuAberto) {
 			menuFechar();
 			menuFimAlt();
+		}
+	}
+	
+	this.exec = function(id) {
+		var executar = !menuAberto;
+		menuFimAlt();
+		if (executar) {
+			fun = new Function(menuNoF[id]);
+			fun();
 		}
 	}
 	
