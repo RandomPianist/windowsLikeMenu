@@ -197,6 +197,7 @@ var Menu = function(dados) {
 	var menuErrAtalho = false;
 	var menuTeclado = false;
 	var mostrando = true;
+	var menuOverSubExec = true;
 	
 	var menuSelecionado = 0;
 	var menuNivel = 0;
@@ -344,43 +345,45 @@ var Menu = function(dados) {
 	}
 	
 	var menuOverSub = function(id) {
-		menuEstiloLimpar();
-		aux = id[0];
-		var aux2 = menuLib[id[0]];
-		for (var i = 1; i < id.length - 1; i++) {
-			aux += "_" + id[i];
-			aux2 = aux2["filhos"][id[i]];
-			menuColorir("menu_abrir" + aux, true);
+		if (menuOverSubExec) {
+			menuEstiloLimpar();
+			aux = id[0];
+			var aux2 = menuLib[id[0]];
+			for (var i = 1; i < id.length - 1; i++) {
+				aux += "_" + id[i];
+				aux2 = aux2["filhos"][id[i]];
+				menuColorir("menu_abrir" + aux, true);
+			}
+			for (var i = 0; i < aux2["filhos"].length; i++) {
+				if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
+			}
+			if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
+				if (menuListaDesativados.indexOf(id.join("_")) == -1) {
+					menuHasChild = true;
+					menuLast = false;
+					if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
+					var lista = document.getElementsByClassName("menu_submenu");
+					for (var i = 0; i < lista.length; i++) {
+						if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
+					}
+					try {
+						menuColorir("menu_abrir" + id.join("_"), true);
+					} catch(err) {
+						menuHasChild = false;
+					}
+				} else menuColorir("menu_abrir" + id.join("_"), false);
+			} else {
+				menuLast = true;
+				var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
+				if (ativo) menuECom = true;
+				menuColorir("menuC" + id.join("_"), ativo);
+			}
+			menuSelecionadoSub = id.join("_");
+			aux = menuLib[id[0]]["filhos"];
+			for (var i = 1; i < id.length - 1; i++) aux = aux[id[i]]["filhos"];
+			menuNivelLim = aux.length - 1;
+			menuNivel = id.length - 1;
 		}
-		for (var i = 0; i < aux2["filhos"].length; i++) {
-			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
-		}
-		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
-			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
-				menuHasChild = true;
-				menuLast = false;
-				if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
-				var lista = document.getElementsByClassName("menu_submenu");
-				for (var i = 0; i < lista.length; i++) {
-					if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
-				}
-				try {
-					menuColorir("menu_abrir" + id.join("_"), true);
-				} catch(err) {
-					menuHasChild = false;
-				}
-			} else menuColorir("menu_abrir" + id.join("_"), false);
-		} else {
-			menuLast = true;
-			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
-			if (ativo) menuECom = true;
-			menuColorir("menuC" + id.join("_"), ativo);
-		}
-		menuSelecionadoSub = id.join("_");
-		aux = menuLib[id[0]]["filhos"];
-		for (var i = 1; i < id.length - 1; i++) aux = aux[id[i]]["filhos"];
-		menuNivelLim = aux.length - 1;
-		menuNivel = id.length - 1;
 	}
 
 	var menuManterAberto = function(id) {
@@ -400,6 +403,10 @@ var Menu = function(dados) {
 		verMenu("menu_submenu" + id.join("_"), true);
 		id[id.length] = 0;
 		menuOverSub(id);
+		menuOverSubExec = false;
+		setTimeout(function() {
+			menuOverSubExec = true;
+		}, 100);
 	}
 	
 	var menuSelecionar = function(novo) {
@@ -904,6 +911,7 @@ var Menu = function(dados) {
 	}
 	
 	this.overSub = function(id) {
+		menuTeclado = false;
 		menuOverSub(id);
 	}
 	
