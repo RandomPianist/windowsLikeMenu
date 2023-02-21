@@ -303,7 +303,8 @@ var Menu = function(dados) {
 				menuECom = false;
 				document.getElementById("menu_delHover").innerHTML = "";
 			}
-		} else if (clique) menuFimAlt();
+		} else if (clique && id == menuSelecionado) menuFimAlt();
+		else menuOver(id);
 	}
 	
 	var menuFechar = function() {
