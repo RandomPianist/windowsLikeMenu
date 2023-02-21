@@ -197,7 +197,6 @@ var Menu = function(dados) {
 	var menuErrAtalho = false;
 	var menuTeclado = false;
 	var mostrando = true;
-	var menuOverSubExec = true;
 	
 	var menuSelecionado = 0;
 	var menuNivel = 0;
@@ -304,7 +303,7 @@ var Menu = function(dados) {
 				menuECom = false;
 				document.getElementById("menu_delHover").innerHTML = "";
 			}
-		} else if (clique) menuFechar();
+		} else if (clique) menuFimAlt();
 	}
 	
 	var menuFechar = function() {
@@ -345,45 +344,43 @@ var Menu = function(dados) {
 	}
 	
 	var menuOverSub = function(id) {
-		if (menuOverSubExec) {
-			menuEstiloLimpar();
-			aux = id[0];
-			var aux2 = menuLib[id[0]];
-			for (var i = 1; i < id.length - 1; i++) {
-				aux += "_" + id[i];
-				aux2 = aux2["filhos"][id[i]];
-				menuColorir("menu_abrir" + aux, true);
-			}
-			for (var i = 0; i < aux2["filhos"].length; i++) {
-				if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
-			}
-			if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
-				if (menuListaDesativados.indexOf(id.join("_")) == -1) {
-					menuHasChild = true;
-					menuLast = false;
-					if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
-					var lista = document.getElementsByClassName("menu_submenu");
-					for (var i = 0; i < lista.length; i++) {
-						if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
-					}
-					try {
-						menuColorir("menu_abrir" + id.join("_"), true);
-					} catch(err) {
-						menuHasChild = false;
-					}
-				} else menuColorir("menu_abrir" + id.join("_"), false);
-			} else {
-				menuLast = true;
-				var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
-				if (ativo) menuECom = true;
-				menuColorir("menuC" + id.join("_"), ativo);
-			}
-			menuSelecionadoSub = id.join("_");
-			aux = menuLib[id[0]]["filhos"];
-			for (var i = 1; i < id.length - 1; i++) aux = aux[id[i]]["filhos"];
-			menuNivelLim = aux.length - 1;
-			menuNivel = id.length - 1;
+		menuEstiloLimpar();
+		aux = id[0];
+		var aux2 = menuLib[id[0]];
+		for (var i = 1; i < id.length - 1; i++) {
+			aux += "_" + id[i];
+			aux2 = aux2["filhos"][id[i]];
+			menuColorir("menu_abrir" + aux, true);
 		}
+		for (var i = 0; i < aux2["filhos"].length; i++) {
+			if (aux2["filhos"][i]["filhos"] !== undefined) verMenu("menu_submenu" + aux + "_" + i, false);
+		}
+		if (aux2["filhos"][id[id.length - 1]]["filhos"] !== undefined) {
+			if (menuListaDesativados.indexOf(id.join("_")) == -1) {
+				menuHasChild = true;
+				menuLast = false;
+				if (!menuTeclado) verMenu("menu_submenu" + id.join("_"), true);
+				var lista = document.getElementsByClassName("menu_submenu");
+				for (var i = 0; i < lista.length; i++) {
+					if (lista[i].id.substring(12).split("_").length > id.length) verMenu(lista[i].id, false);
+				}
+				try {
+					menuColorir("menu_abrir" + id.join("_"), true);
+				} catch(err) {
+					menuHasChild = false;
+				}
+			} else menuColorir("menu_abrir" + id.join("_"), false);
+		} else {
+			menuLast = true;
+			var ativo = menuListaDesativados.indexOf(id.join("_")) == -1;
+			if (ativo) menuECom = true;
+			menuColorir("menuC" + id.join("_"), ativo);
+		}
+		menuSelecionadoSub = id.join("_");
+		aux = menuLib[id[0]]["filhos"];
+		for (var i = 1; i < id.length - 1; i++) aux = aux[id[i]]["filhos"];
+		menuNivelLim = aux.length - 1;
+		menuNivel = id.length - 1;
 	}
 
 	var menuManterAberto = function(id) {
@@ -403,15 +400,10 @@ var Menu = function(dados) {
 		verMenu("menu_submenu" + id.join("_"), true);
 		id[id.length] = 0;
 		menuOverSub(id);
-		menuOverSubExec = false;
-		setTimeout(function() {
-			menuOverSubExec = true;
-		}, 100);
 	}
 	
 	var menuSelecionar = function(novo) {
 		menuSelecionado += novo;
-		menuTeclado = true;
 		if (menuSelecionado < 0) menuSelecionado = menuLib.length - 1;
 		else if (menuSelecionado >= menuLib.length) menuSelecionado = 0;
 		menuCallAbrir(menuSelecionado, true, event.keyCode);
@@ -505,7 +497,7 @@ var Menu = function(dados) {
 					idsub = menuC;
 					if (arr[i]["desativado"]) menuListaDesativados[menuListaDesativados.length] = idsub.join("_");
 					resultado += ">" +
-						"<a onmouseover = 'menu.overSub([" + idsub.join(",") + "]);' id = 'menu_abrir" + idsub.join("_") + "' class = '" + classe + "'>" +
+						"<a onmousemove = 'menu.overSub([" + idsub.join(",") + "]);' id = 'menu_abrir" + idsub.join("_") + "' class = '" + classe + "'>" +
 							"<table class = 'menu_tabela'>" +
 								"<tr>" +
 									"<td class = 'menu_margem'>" +
@@ -538,7 +530,7 @@ var Menu = function(dados) {
 					"<a " +
 						"href = '" + funcaoC + "'" +
 						"class = '" + classe + "'" +
-						"onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])'" +
+						"onmousemove = 'menu.manterAberto([" + menuC.join(",") + "])'" +
 						"id = 'menuC" + menuC.join("_") +
 					"'>" +
 						"<table class = 'menu_tabela'>" +
@@ -566,7 +558,7 @@ var Menu = function(dados) {
 					"<a " +
 						"href = '" + funcaoC + "'" +
 						"class = '" + classe + "'" +
-						"onmouseover = 'menu.manterAberto([" + menuC.join(",") + "])'" +
+						"onmousemove = 'menu.manterAberto([" + menuC.join(",") + "])'" +
 						"id = 'menuC" + menuC.join("_") +
 					"'>" +
 						"<table class = 'menu_tabela'>" +
@@ -707,14 +699,6 @@ var Menu = function(dados) {
 			"span.menu_span a {" +
 				"color:" + menuEstilo["menu_item"]["color"] +
 			"}" +
-			"a.menu_item:hover {" +
-				"border-color:" + menuEstilo["submenu_item"]["on"]["hover"]["border"] + ";" +
-				"background:" + menuEstilo["submenu_item"]["on"]["hover"]["background"] +
-			"}" +
-			"a.menu_item_des:hover {" +
-				"border-color:" + menuEstilo["submenu_item"]["off"]["hover"]["border"] + ";" +
-				"background:" + menuEstilo["submenu_item"]["off"]["hover"]["background"] +
-			"}" +
 			"table.menu_tabela {" +
 				"border-spacing:0;" +
 				"color:inherit;" +
@@ -797,7 +781,10 @@ var Menu = function(dados) {
 				if (menuCod[event.keyCode] == menuAtal[i].toUpperCase() && !feito) menuOver(i);
 			}
 		}
-		if (feito || event.keyCode == 13 || event.keyCode == 18 || event.keyCode == 27 || (event.keyCode >= 37 && event.keyCode <= 40)) e.preventDefault();
+		if (feito || event.keyCode == 13 || event.keyCode == 18 || event.keyCode == 27 || (event.keyCode >= 37 && event.keyCode <= 40)) {
+			e.preventDefault();
+			menuTeclado = true;
+		}
 		if (!feito) {
 			if ((event.keyCode == 38 || event.keyCode == 40) && menuSelecionadoSub != "") {
 				for (var i = 0; i < sel.length; i++) sel[i] = parseInt(sel[i]);
@@ -872,9 +859,20 @@ var Menu = function(dados) {
 							aux = new Array();
 							for (var i = 0; i < sel.length - 1; i++) aux[i] = sel[i];
 							sel = aux;
-							if (sel.length > 1) menuOverSub(sel);
-							else menuSelecionar(-1);
-						} else menuProx(sel);
+							if (sel.length > 1) {
+								menuOverSub(sel);
+								verMenu("menu_submenu" + sel.join("_"), false);
+							} else menuSelecionar(-1);
+						} else {
+							menuProx(sel);
+							try {
+								verMenu("menu_submenu" + sel.join("_"), false);
+								aux = new Array();
+								for (var i = 0; i < sel.length - 1; i++) aux[i] = sel[i];
+								sel = aux;
+								verMenu("menu_submenu" + sel.join("_"), true);
+							} catch(err) {}
+						}
 					} else {
 						menuSelecionar(event.keyCode - 38);
 						verMenu("menu_submenu" + menuSelecionadoSub.split("_")[0], false);
