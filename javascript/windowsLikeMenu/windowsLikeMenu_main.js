@@ -449,7 +449,9 @@ var Menu = function(dados) {
 		for (var i = 0; i < arr.length; i++) {
 			var menuC = new Array();
 			var classe = "menu_item";
-			if (arr[i]["funcao"] !== undefined && nivel == 1) arr[i]["filhos"] = new Array();
+			var hasF = true;
+			if (arr[i]["funcao"] !== undefined && nivel == 1 && arr[i]["funcao"] != "") hasF = false;
+			else if (arr[i]["funcao"] == "") hasF = !arr[i]["desativado"];
 			if (arr[i]["desativado"]) classe += "_des";
 			var funcaoC = !arr[i]["desativado"] ? "javascript:menu.fim();" + arr[i]["funcao"] : "#";
 			for (var j = 0; j < nivel - 1; j++) menuC[menuC.length] = idsub[j];
@@ -493,7 +495,7 @@ var Menu = function(dados) {
 							"</table>" +
 						"</a>" +
 					menuCriar(arr[i]["filhos"], true, recuo, nivel + 1, idsub, larguras);
-				} else if (arr[i]["filhos"].length == 0) {
+				} else if (!hasF) {
 					if (arr[i]["desativado"] === undefined || !arr[i]["desativado"]) menuNoF[i] = arr[i]["funcao"];
 					resultado += ">" +
 						"<span class = 'menu_span' onmouseover = 'menu.over(" + i + ");' onclick = 'menu.exec(" + i + ")' id = 'menu_m" + i + "'>" +
@@ -967,9 +969,7 @@ var Menu = function(dados) {
 			menuListaDesativados = new Array();
 		} else {
 			menuLib[arr[0]]["desativado"] = !ativo;
-			for (var i = 0; i < menuLib.length; i++) {
-				if (menuLib[i]["desativado"] && menuLib[i]["funcao"] === undefined) menuLib[i]["funcao"] = "";
-			}
+			if (menuLib[arr[0]]["funcao"] === undefined) menuLib[arr[0]]["funcao"] = "";
 		}
 		menuLoad();
 	}
