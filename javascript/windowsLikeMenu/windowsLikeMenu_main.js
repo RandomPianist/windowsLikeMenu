@@ -374,6 +374,16 @@ var Menu = function(dados) {
 		menuCallAbrir(menuSelecionado, true, event.keyCode);
 	}
 	
+	var callNoF = function() {
+		if (menuNoF[menuSelecionado] !== undefined) {
+			menu.fim();
+			fun = new Function(menuNoF[menuSelecionado]);
+			fun();
+		} else setTimeout(function() {
+			menu.fim();
+		}, 150);
+	}
+	
 	var menuCriar = function(arr, sub, recuo, nivel, idsub, larguras) {
 		var maior = 0;
 		for (var i = 0; i < arr.length; i++) {
@@ -756,8 +766,10 @@ var Menu = function(dados) {
 						menu.fim();
 						fun = new Function(menuNoF[i]);
 						fun();
-					} else if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) menu.over(i);
-					else menu.fim();
+					} else if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) {
+						menuCallAbrir(i, true, -1);
+						mostrando = true;
+					} else menu.fim();
 				}
 			}
 		}
@@ -767,30 +779,31 @@ var Menu = function(dados) {
 		}
 		if (!feito) {
 			if ((event.keyCode == 38 || event.keyCode == 40) && menuSelecionadoSub != "") {
-				for (var i = 0; i < sel.length; i++) sel[i] = parseInt(sel[i]);
-				sel[menuNivel] += event.keyCode - 39;
-				var continuar = true;
-				if (sel[menuNivel] < 0) {
-					var indicador = menuSelecionadoSub.split("_");
-					if (indicador.length <= 2) {
-						sel[menuNivel] = 0;
-						continuar = false;
-					} else sel[menuNivel] = menuNivelLim;
-				} else if (sel[menuNivel] > menuNivelLim) sel[menuNivel] = 0;
-				if (continuar) {
-					if (menuEscId > -1) {
-						verMenu("menu_submenu" + menuEscId, true);
-						sel[menuNivel] = 0;
-						menuEscId = -1;
+				if (mostrando) {
+					for (var i = 0; i < sel.length; i++) sel[i] = parseInt(sel[i]);
+					sel[menuNivel] += event.keyCode - 39;
+					var continuar = true;
+					if (sel[menuNivel] < 0) {
+						var indicador = menuSelecionadoSub.split("_");
+						if (indicador.length <= 2) {
+							sel[menuNivel] = 0;
+							continuar = false;
+						} else sel[menuNivel] = menuNivelLim;
+					} else if (sel[menuNivel] > menuNivelLim) sel[menuNivel] = 0;
+					if (continuar) {
+						if (menuEscId > -1) {
+							verMenu("menu_submenu" + menuEscId, true);
+							sel[menuNivel] = 0;
+							menuEscId = -1;
+						}
+						menuOverSub(sel);
+						for (var i = document.getElementsByClassName("menu_item").length - 1; i >= 0; i--) menuRecol(i, sel, "");
+						for (var i = document.getElementsByClassName("menu_item_des").length - 1; i >= 0; i--) menuRecol(i, sel, "");
+					} else {
+						verMenu("menu_submenu" + indicador[0], false);
+						mostrando = false;
 					}
-					menuOverSub(sel);
-					for (var i = document.getElementsByClassName("menu_item").length - 1; i >= 0; i--) menuRecol(i, sel, "");
-					for (var i = document.getElementsByClassName("menu_item_des").length - 1; i >= 0; i--) menuRecol(i, sel, "");
-				} else {
-					verMenu("menu_submenu" + indicador[0], false);
-					mostrando = false;
-				}
-				if (event.keyCode == 40 && !mostrando) {
+				} else if (event.keyCode == 40) {
 					menuCallAbrir(parseInt(menuSelecionadoSub.split("_")[0]), true, -1);
 					mostrando = true;
 				}
@@ -818,6 +831,7 @@ var Menu = function(dados) {
 					menuVisiveis = new Array();
 					menuEscId = menuSelecionado;
 					menuECom = false;
+					mostrando = false;
 				} else menu.fim();
 			} else if (menuAberto) {
 				if (event.keyCode == 13) {
@@ -830,16 +844,12 @@ var Menu = function(dados) {
 								fun = new Function(aux["funcao"]);
 								fun();
 							} else if (menuHasChild) menuProx(sel);
-						} else if (!menuHasChild) {
-							if (menuNoF[menuSelecionado] !== undefined) {
-								menu.fim();
-								fun = new Function(menuNoF[menuSelecionado]);
-								fun();
-							} else setTimeout(function() {
-								menu.fim();
-							}, 150);
-						} else menuProx(sel);
-					} else menu.fim();
+						} else if (!menuHasChild) callNoF();
+						else menuProx(sel);
+					} else if (menuLib[menuSelecionado]["filhos"].length > 0) {
+						menuSelecionar(0);
+						mostrando = true;
+					} else callNoF();
 				} else if (event.keyCode == 37 || event.keyCode == 39) {
 					if (mostrando) {
 						if (!menuHasChild || (event.keyCode == 39 && menuLast)) menuSelecionar(event.keyCode - 38);
