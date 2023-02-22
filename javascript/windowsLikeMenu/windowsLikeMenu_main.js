@@ -660,8 +660,8 @@ var Menu = function(dados) {
 				"border-color:transparent;" +
 				"border-style:solid;" +
 				"border-width:1px;" +
-				"border-radius:3px;" +
-			"}" +		
+				"border-radius:3px" +
+			"}" +
 			"span.menu_span {" +
 				"display:inline-block;" +
 				"padding:3px 8px;" +
