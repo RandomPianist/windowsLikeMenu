@@ -608,9 +608,7 @@ var Menu = function(dados) {
 			".menu {" +
 				"height:25px;" +
 				"padding-top:1px;" +
-				"border-bottom-color:" + menuEstilo["menu"]["border"] + ";" +
-				"border-bottom-style:solid;" +
-				"border-bottom-width:1px;" +
+				"border-bottom:1px solid " + menuEstilo["menu"]["border"] + ";" +
 				"background:" + menuEstilo["menu"]["background"] + ";" +
 				"font-family:Tahoma;" +
 				"font-size:12.5px;" +
@@ -657,9 +655,7 @@ var Menu = function(dados) {
 				"margin:-5px 0 -6px" +
 			"}" +
 			"span.menu_span, a.menu_item, a.menu_item_des {" +
-				"border-color:transparent;" +
-				"border-style:solid;" +
-				"border-width:1px;" +
+				"border:1px solid transparent;" +
 				"border-radius:3px" +
 			"}" +
 			"span.menu_span {" +
@@ -688,9 +684,7 @@ var Menu = function(dados) {
 			"}" +
 			"table.menu_tabela td.menu_margem {" +
 				"width:19px;" +
-				"border-right-color:" + menuEstilo["menu"]["border"] + ";" +
-				"border-right-style:solid;" +
-				"border-right-width:1px" +
+				"border-right:1px solid " + menuEstilo["menu"]["border"] +
 			"}" +
 			"table.menu_tabela td.menu_texto {" +
 				"padding:2px 0 2px 6px" + 
