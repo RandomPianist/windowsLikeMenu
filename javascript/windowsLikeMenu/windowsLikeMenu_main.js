@@ -814,7 +814,7 @@ var Menu = function(dados) {
 					menuCallAbrir(0, true, -1);
 				} else menu.fim();
 			} else if (event.keyCode == 27) {
-				if (menuEscId == -1 && mostrando) {
+				if (menuEscId == -1 && mostrando && menuVisiveis.length > 0) {
 					lista = document.getElementsByClassName("menu_submenu");
 					for (var i = 0; i < lista.length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
 					menuVisiveis = new Array();
