@@ -276,7 +276,7 @@ var Menu = function(dados) {
 					document.getElementById("menu_m" + i).style.background = "none";
 				}
 			}
-		}, 100);
+		}, 1);
 	}
 	
 	var verMenu = function(id, visivel) {
