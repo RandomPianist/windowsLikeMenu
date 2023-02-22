@@ -958,11 +958,18 @@ var Menu = function(dados) {
 	
 	this.ativacao = function(id, ativo) {
 		var arr = id.split("_");
-		var aux = menuLib[arr[0]]["filhos"];
-		for (var i = 1; i < arr.length - 1; i++) aux = aux[arr[i]]["filhos"];
-		aux = aux[arr[arr.length - 1]];
-		aux["desativado"] = !ativo;
-		menuListaDesativados = new Array();
+		if (arr.length > 1) {
+			var aux = menuLib[arr[0]]["filhos"];
+			for (var i = 1; i < arr.length - 1; i++) aux = aux[arr[i]]["filhos"];
+			aux = aux[arr[arr.length - 1]];
+			aux["desativado"] = !ativo;
+			menuListaDesativados = new Array();
+		} else {
+			menuLib[arr[0]]["desativado"] = !ativo;
+			for (var i = 0; i < menuLib.length; i++) {
+				if (menuLib[i]["desativado"] && menuLib[i]["funcao"] === undefined) menuLib[i]["funcao"] = "";
+			}
+		}
 		menuLoad();
 	}
 }
