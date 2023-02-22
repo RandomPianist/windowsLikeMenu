@@ -211,6 +211,7 @@ var Menu = function(dados) {
 	var menuEscId = -1;
 
 	var menuLoad = function() {
+		menuNoF = new Array();
 		menuAtalSub = new Array();
 		menuAtalSubF = new Array();
 		menuAtalSubC = new Array();
