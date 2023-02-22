@@ -195,6 +195,7 @@ var Menu = function(dados) {
 	var menuVisiveis = new Array();
 	var menuFixar = new Array();
 	var menuListaDesativados = new Array();
+	var menuListaBlock = new Array();
 		
 	var menuAberto = false;
 	var menuHasChild = false;
@@ -217,6 +218,7 @@ var Menu = function(dados) {
 		menuAtalSubC = new Array();
 		menuVisiveis = new Array();
 		menuFixar = new Array();
+		menuListaBlock = new Array();
 		var resultado = menuCriar(menuLib, false, 0, 1, [], []);
 		document.body.innerHTML = "<div>" + resultado + "</div><div class = 'menuRes' id = 'menuRes'>" + menuResCorpo + "</div>";
 		document.getElementById("menuRes").style.height = (window.innerHeight - 68) + "px";
@@ -252,6 +254,18 @@ var Menu = function(dados) {
 
 	var menuCallAbrir = function(id, clique, evento) {
 		menu.abrir(id, true, event.keyCode);
+		var hasF = true;
+		if (menuLib[id]["funcao"] !== undefined && menuLib[id]["funcao"] != "") hasF = false;
+		else if (menuLib[id]["funcao"] == "") hasF = !menuLib[id]["desativado"];
+		if (!hasF) {
+			var lista = document.getElementsByClassName("menu_submenu");
+			for (var i = 0; i < lista.length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
+			menuVisiveis = new Array();
+			menuEscId = menuSelecionado;
+			menuECom = false;
+			mostrando = false;
+			if (menuListaBlock.indexOf(menuSelecionado) == -1) menuListaBlock[menuListaBlock.length] = menuSelecionado;
+		}
 		setTimeout(function() {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
@@ -450,8 +464,10 @@ var Menu = function(dados) {
 			var menuC = new Array();
 			var classe = "menu_item";
 			var hasF = true;
-			if (arr[i]["funcao"] !== undefined && nivel == 1 && arr[i]["funcao"] != "") hasF = false;
-			else if (arr[i]["funcao"] == "") hasF = !arr[i]["desativado"];
+			if (nivel == 1) {
+				if (arr[i]["funcao"] !== undefined && arr[i]["funcao"] != "") hasF = false;
+				else if (arr[i]["funcao"] == "") hasF = !arr[i]["desativado"];
+			}
 			if (arr[i]["desativado"]) classe += "_des";
 			var funcaoC = !arr[i]["desativado"] ? "javascript:menu.fim();" + arr[i]["funcao"] : "#";
 			for (var j = 0; j < nivel - 1; j++) menuC[menuC.length] = idsub[j];
@@ -764,15 +780,18 @@ var Menu = function(dados) {
 			}
 			for (var i = 0; i < menuAtal.length; i++) {
 				if (menuCod[event.keyCode] == menuAtal[i].toUpperCase() && !feito) {
-					if (menuNoF[i] !== undefined) {
-						feito = true;
-						menu.fim();
-						fun = new Function(menuNoF[i]);
-						fun();
-					} else if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) {
-						menuCallAbrir(i, true, -1);
-						mostrando = true;
-					} else menu.fim();
+					if (menuListaBlock.indexOf(i) == -1) {
+						if (menuNoF[i] !== undefined) {
+							feito = true;
+							menu.fim();
+							fun = new Function(menuNoF[i]);
+							fun();
+						} else if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) {
+							menuCallAbrir(i, true, -1);
+							mostrando = true;
+						} else menu.fim();
+					} else if (menuSelecionado != i) menuCallAbrir(i, true, -1);
+					else menu.fim();
 				}
 			}
 		}
@@ -780,7 +799,7 @@ var Menu = function(dados) {
 			e.preventDefault();
 			menuTeclado = true;
 		}
-		if (!feito) {
+		if (!feito && !(menuListaBlock.indexOf(menuSelecionado) > -1 && (event.keyCode == 13 || event.keyCode == 38 || event.keyCode == 40))) {
 			if ((event.keyCode == 38 || event.keyCode == 40) && menuSelecionadoSub != "") {
 				if (mostrando) {
 					for (var i = 0; i < sel.length; i++) sel[i] = parseInt(sel[i]);
@@ -880,7 +899,7 @@ var Menu = function(dados) {
 					}
 				}
 			}
-		}
+		} else if (menuListaBlock.indexOf(menuSelecionado) > -1 && event.keyCode == 13) menu.fim();
 	}
 	
 	this.keyUp = function(event) {
