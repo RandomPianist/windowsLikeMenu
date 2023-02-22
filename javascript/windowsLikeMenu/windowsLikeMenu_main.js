@@ -798,13 +798,11 @@ var Menu = function(dados) {
 				mostrando = true;
 				if (!menuAberto) {
 					menuAtal = new Array();
-					menuNoF = new Array();
 					for (var i = 0; i < menuLib.length; i++) {
 						lista = menuLib[i];
 						if (lista["letraAlt"] !== undefined) {
 							span = lista["texto"].substring(0, lista["letraAlt"]);
 							menuAtal[i] = lista["texto"].substring(lista["letraAlt"], lista["letraAlt"] + 1);
-							if (lista["funcao"] !== undefined && (lista["desativado"] === undefined || !lista["desativado"])) menuNoF[i] = lista["funcao"];
 							span += "<u>" + menuAtal[i] + "</u>";
 							span += lista["texto"].substring(lista["letraAlt"] + 1);
 							document.getElementById("menu_m" + i).innerHTML = span;
@@ -832,7 +830,11 @@ var Menu = function(dados) {
 							fun();
 						} else if (menuHasChild) menuProx(sel);
 					} else if (!menuHasChild) {
-						setTimeout(function() {
+						if (menuNoF[menuSelecionado] !== undefined) {
+							menu.fim();
+							fun = new Function(menuNoF[menuSelecionado]);
+							fun();
+						} else setTimeout(function() {
 							menu.fim();
 						}, 150);
 					} else menuProx(sel);
