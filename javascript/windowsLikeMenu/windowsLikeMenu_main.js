@@ -821,23 +821,25 @@ var Menu = function(dados) {
 				} else menu.fim();
 			} else if (menuAberto) {
 				if (event.keyCode == 13) {
-					if (menuECom) {
-						aux = menuLib[sel[0]];
-						for (var i = 1; i < sel.length; i++) aux = aux["filhos"][sel[i]];
-						if (aux["funcao"] !== undefined && !aux["desativado"]) {
-							menu.fim();
-							fun = new Function(aux["funcao"]);
-							fun();
-						} else if (menuHasChild) menuProx(sel);
-					} else if (!menuHasChild) {
-						if (menuNoF[menuSelecionado] !== undefined) {
-							menu.fim();
-							fun = new Function(menuNoF[menuSelecionado]);
-							fun();
-						} else setTimeout(function() {
-							menu.fim();
-						}, 150);
-					} else menuProx(sel);
+					if (mostrando) {
+						if (menuECom) {
+							aux = menuLib[sel[0]];
+							for (var i = 1; i < sel.length; i++) aux = aux["filhos"][sel[i]];
+							if (aux["funcao"] !== undefined && !aux["desativado"]) {
+								menu.fim();
+								fun = new Function(aux["funcao"]);
+								fun();
+							} else if (menuHasChild) menuProx(sel);
+						} else if (!menuHasChild) {
+							if (menuNoF[menuSelecionado] !== undefined) {
+								menu.fim();
+								fun = new Function(menuNoF[menuSelecionado]);
+								fun();
+							} else setTimeout(function() {
+								menu.fim();
+							}, 150);
+						} else menuProx(sel);
+					} else menu.fim();
 				} else if (event.keyCode == 37 || event.keyCode == 39) {
 					if (mostrando) {
 						if (!menuHasChild || (event.keyCode == 39 && menuLast)) menuSelecionar(event.keyCode - 38);
