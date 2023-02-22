@@ -389,14 +389,17 @@ var Menu = function(dados) {
 		menuCallAbrir(menuSelecionado, true, event.keyCode);
 	}
 	
+	var funcao = function(val) {
+		menu.fim();
+		fun = new Function(val);
+		fun();
+	}
+	
 	var callNoF = function() {
-		if (menuNoF[menuSelecionado] !== undefined) {
-			menu.fim();
-			fun = new Function(menuNoF[menuSelecionado]);
-			fun();
-		} else setTimeout(function() {
+		if (menuNoF[menuSelecionado] === undefined) setTimeout(function() {
 			menu.fim();
 		}, 150);
+		else funcao(menuNoF[menuSelecionado]);
 	}
 	
 	var menuCriar = function(arr, sub, recuo, nivel, idsub, larguras) {
@@ -766,27 +769,23 @@ var Menu = function(dados) {
 	
 	this.keyDown = function(e, event) {
 		if (!menuErrAtalho) comandos.executarFuncao(e, event.keyCode);
-		var span, fun, aux, lista;
+		var span, aux, lista;
 		var feito = false;
 		var sel = menuSelecionadoSub.toString().split("_");
 		if (document.getElementById("menu_alt").innerHTML != "") {
 			for (var i = 0; i < menuAtalSub.length; i++) {
 				if (menuCod[event.keyCode] == menuAtalSub[i] && menuVisiveis.indexOf(menuAtalSubC[i]) > -1) {
 					feito = true;
-					menu.fim();
-					fun = new Function(menuAtalSubF[i]);
-					fun();
+					funcao(menuAtalSubF[i]);
 				}
 			}
 			for (var i = 0; i < menuAtal.length; i++) {
 				if (menuCod[event.keyCode] == menuAtal[i].toUpperCase() && !feito) {
-					if (menuListaBlock.indexOf(i) == -1) {
-						if (menuNoF[i] !== undefined) {
-							feito = true;
-							menu.fim();
-							fun = new Function(menuNoF[i]);
-							fun();
-						} else if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) {
+					if (menuNoF[i] !== undefined) {
+						feito = true;
+						funcao(menuNoF[i]);
+					} else if (menuListaBlock.indexOf(i) == -1) {
+						if (menuSelecionado != i || (menuVisiveis.length == 0 && menuLib[i]["filhos"].length > 0)) {
 							menuCallAbrir(i, true, -1);
 							mostrando = true;
 						} else menu.fim();
@@ -861,11 +860,8 @@ var Menu = function(dados) {
 						if (menuECom) {
 							aux = menuLib[sel[0]];
 							for (var i = 1; i < sel.length; i++) aux = aux["filhos"][sel[i]];
-							if (aux["funcao"] !== undefined && !aux["desativado"]) {
-								menu.fim();
-								fun = new Function(aux["funcao"]);
-								fun();
-							} else if (menuHasChild) menuProx(sel);
+							if (aux["funcao"] !== undefined && !aux["desativado"]) funcao(aux["funcao"]);
+							else if (menuHasChild) menuProx(sel);
 						} else if (!menuHasChild) callNoF();
 						else menuProx(sel);
 					} else if (menuLib[menuSelecionado]["filhos"].length > 0) {
