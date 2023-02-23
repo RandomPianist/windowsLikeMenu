@@ -391,7 +391,7 @@ var Menu = function(dados) {
 	
 	var funcao = function(val) {
 		menu.fim();
-		fun = new Function(val);
+		var fun = new Function(val);
 		fun();
 	}
 	
@@ -915,7 +915,7 @@ var Menu = function(dados) {
 		var executar = !menuAberto;
 		menu.fim();
 		if (executar) {
-			fun = new Function(menuNoF[id]);
+			var fun = new Function(menuNoF[id]);
 			fun();
 		}
 	}
