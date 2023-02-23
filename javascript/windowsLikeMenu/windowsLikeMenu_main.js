@@ -252,18 +252,6 @@ var Menu = function(dados) {
 
 	var menuCallAbrir = function(id, clique, evento) {
 		menu.abrir(id, true, event.keyCode);
-		var hasF = true;
-		if (menuLib[id]["funcao"] !== undefined && menuLib[id]["funcao"] != "") hasF = false;
-		else if (menuLib[id]["funcao"] == "") hasF = !menuLib[id]["desativado"];
-		if (!hasF) {
-			var lista = document.getElementsByClassName("menu_submenu");
-			for (var i = 0; i < lista.length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
-			menuVisiveis = new Array();
-			menuEscId = menuSelecionado;
-			menuECom = false;
-			mostrando = false;
-			if (menuListaBlock.indexOf(menuSelecionado) == -1) menuListaBlock[menuListaBlock.length] = menuSelecionado;
-		}
 		setTimeout(function() {
 			for (var i = 0; i < menuLib.length; i++) {
 				if (i == id) {
@@ -946,6 +934,18 @@ var Menu = function(dados) {
 			}
 		} else if (clique && id == menuSelecionado) menu.fim();
 		else menuOver(id);
+		var hasF = true;
+		if (menuLib[id]["funcao"] !== undefined && menuLib[id]["funcao"] != "") hasF = false;
+		else if (menuLib[id]["funcao"] == "") hasF = !menuLib[id]["desativado"];
+		if (!hasF) {
+			var lista = document.getElementsByClassName("menu_submenu");
+			for (var i = 0; i < lista.length; i++) document.getElementsByClassName("menu_submenu")[i].style.display = "none";
+			menuVisiveis = new Array();
+			menuEscId = menuSelecionado;
+			menuECom = false;
+			mostrando = false;
+			if (menuListaBlock.indexOf(menuSelecionado) == -1) menuListaBlock[menuListaBlock.length] = menuSelecionado;
+		}
 	}
 	
 	this.manterAberto = function(id) {
