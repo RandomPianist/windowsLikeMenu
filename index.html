@@ -1,0 +1,1190 @@
+<!--
+WINDOWS LIKE MENU 1.1 © 2023
+Desenvolvido por Reynolds Costa, no Notepad++
+O uso é permitido; a comercialização, proibida.
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Windows Like Menu</title>
+		<link rel = "stylesheet" type = "text/css" href = "https://randompianist.github.io/documentacao.css" />
+		<script type = "text/javascript" language = "JavaScript" src = "https://randompianist.github.io/combinarTeclas/js/combinarTeclas2.0_main_mini.js"></script>
+		<script type = "text/javascript" language = "JavaScript" src = "js/windowsLikeMenu1.1_main_mini.js"></script>
+		<script type = "text/javascript" language = "JavaScript" src = "js/windowsLikeMenu1.1_func.js"></script>
+		<script type = "text/javascript" language = "JavaScript" src = "js/exemplo.js"></script>
+	</head>
+	<body>
+		<div class = "bloco">
+			<h1>
+				<a name = "introducao">1. Introdução</a>
+			</h1>
+			<p>
+				<span>
+					================================
+					<br />
+					| NÃO COMERCIALIZE ESSE SCRIPT |
+					<br />
+					================================
+				</span>
+			</p>
+			<p>WINDOWS LIKE MENU 1.1, por Reynolds Costa</p>
+			<p>Essa biblioteca tem a finalidade de simular um menu como o do S.O. Windows, incluindo comandos de atalho e seleção com o teclado.</p>
+			<p>
+				Ela faz uso obrigatório da biblioteca previamente publicada
+				<a href="https://github.com/RandomPianist/combinarTeclas" class="repo_link" target="_blank">combinarTeclas</a>,
+				sendo requerida a sua versão 2.0.
+			</p>
+		</div>
+		<hr />
+		<div class = "bloco">
+			<h1>
+				<a name = "instalacao">2. Instalação</a>
+			</h1>
+			<p>
+				Para começar a usar essa biblioteca, copie os arquivos
+				<span class = "arquivo">windowsLikeMenu1.1_func.js</span>
+				e
+				<span class = "arquivo">windowsLikeMenu1.1_main_mini.js</span>*
+				na pasta
+				<span class = "pasta">js</span>
+				<a href="https://github.com/RandomPianist/windowsLikeMenu" class="repo_link" target="_blank">do presente repositório</a>
+				e o arquivo
+				<span class = "arquivo">combinarTeclas2.0_main_mini.js</span>*
+				do repositório previamente publicado
+				<a href="https://github.com/RandomPianist/combinarTeclas" class="repo_link" target="_blank">combinarTeclas</a>
+				e faça conexões com eles no seu projeto usando o atributo
+				<span class = "HTML_atributo">src</span>
+				da tag
+				<span class = "HTML_tag">&#60;script&#62;</span>.
+			</p>
+			<p>A sua instalação deve se parecer com isso:</p>
+			<details>
+				<summary>Ver código</summary>
+				<div class = "codigo">
+					<div>
+						<p>
+							<span class = "HTML_tag">&#60;script</span>
+							<span class = "HTML_atributo">type</span>
+							=
+							<span class = "texto">"text/javascript"</span>
+							<span class = "HTML_atributo">language</span>
+							=
+							<span class = "texto">"JavaScript"</span>
+							<span class = "HTML_atributo">src</span>
+							=
+							<span class = "arquivo">"js/combinarTeclas2.0_main_mini.js"</span><span class = "HTML_tag">&#62;</span><span class = "HTML_tag">&#60;/script&#62;</span>
+						</p>
+						<p>
+							<span class = "HTML_tag">&#60;script</span>
+							<span class = "HTML_atributo">type</span>
+							=
+							<span class = "texto">"text/javascript"</span>
+							<span class = "HTML_atributo">language</span>
+							=
+							<span class = "texto">"JavaScript"</span>
+							<span class = "HTML_atributo">src</span>
+							=
+							<span class = "arquivo">"js/windowsLikeMenu1.1_main_mini.js"</span><span class = "HTML_tag">&#62;</span><span class = "HTML_tag">&#60;/script&#62;</span>
+						</p>
+						<p>
+							<span class = "HTML_tag">&#60;script</span>
+							<span class = "HTML_atributo">type</span>
+							=
+							<span class = "texto">"text/javascript"</span>
+							<span class = "HTML_atributo">language</span>
+							=
+							<span class = "texto">"JavaScript"</span>
+							<span class = "HTML_atributo">src</span>
+							=
+							<span class = "arquivo">"js/windowsLikeMenu1.1_func.js"</span><span class = "HTML_tag">&#62;</span><span class = "HTML_tag">&#60;/script&#62;</span>
+						</p>
+					</div>
+				</div>
+			</details>
+			<hr />
+			<table>
+				<tr>
+					<td class = "vtop">*</td>
+					<td class = "obs">
+						Não é necessário usar os arquivos
+						<span class = "arquivo">windowsLikeMenu1.1_main.js</span>
+						e
+						<span class = "arquivo">combinarTeclas2.0_main.js</span>,
+						mais pesados que sua contrapartes minificadas, disponíveis em seus respectivos repositórios apenas para consulta e contribuição.
+					</td>
+				</tr>
+			</table>
+		</div>
+		<hr />
+		<div class = "bloco">
+			<h1>3. Utilização</h1>
+			<h3 style = "margin-top:0">
+				<a name = "objeto">3.1. Objeto principal</a>
+			</h3>
+			<p>
+				O funcionamento dessa biblioteca se baseia em um objeto JSON principal que é instanciado recursivamente de acordo com os filhos na árvore do menu.
+				Para compreender a biblioteca, é necessário compreender antes esse objeto simples. Ele possui as seguintes chaves:
+			</p>
+			<table class = "explicacao_menu w100" border = 1>
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Tipo</th>
+						<th>Obrigatório</th>
+						<th>Explicação</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>texto</td>
+						<td>string</td>
+						<td>Sim</td>
+						<td>Faz referência ao texto de cada elemento do menu.</td>
+					</tr>
+					<tr>
+						<td>letraAlt</td>
+						<td>number</td>
+						<td>Não</td>
+						<td>
+							Índice da posição do caractere no texto que será destacado e poderá ser pressionado no teclado para executar o comando.
+							<br />
+							Não pode fazer referência a um caractere que já tenha sido declarado ou não seja alfabético.
+						</td>
+					</tr>
+					<tr>
+						<td>atalho</td>
+						<td>array</td>
+						<td>Não. Não declare caso hajam filhos.</td>
+						<td>Vetor com os códigos das teclas que, ao pressionadas em conjunto e na ordem, executam a função. Não declare se houverem filhos.</td>
+					</tr>
+					<tr>
+						<td>funcao</td>
+						<td>function</td>
+						<td>Sim se não houver filhos, não declare caso hajam.</td>
+						<td>Função que é executada ao se clicar sobre o item no menu ou ao pressionar a combinação de teclas que faz referência ao seu atalho.</td>
+					</tr>
+					<tr>
+						<td>destacado</td>
+						<td>boolean</td>
+						<td>Não. Não declare em elementos na raiz.</td>
+						<td>Inclui uma barra vertical acima do item.</td>
+					</tr>
+					<tr>
+						<td>desativado</td>
+						<td>boolean</td>
+						<td>Não</td>
+						<td>Desativa o item do menu quando verdadeiro.</td>
+					</tr>
+					<tr>
+						<td>filhos</td>
+						<td>array</td>
+						<td>Sim se não houver função, não declare caso hajam.</td>
+						<td>Vetor com uma lista de objetos com a mesma estrutura.</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>
+				<a name = "principal">3.2. Função principal</a>
+			</h3>
+			<p>
+				Para criar o menu, abaixo das conexões descritas no item 2, declara-se a constante
+				<span class = "variavel">WLM</span>
+				como instância da classe
+				<span class = "classe">Menu</span>,
+				passando como parâmetro para a construção um array com uma lista de objetos segundo o modelo dado no item 3.1.
+			</p>
+			<p>Observe o código de exemplo desta página:</p>
+			<details>
+				<summary>Ver código</summary>
+				<div class = "codigo">
+					<div>
+						<p>
+							<span class = "comentario">// ARQUIVO DE EXEMPLO
+						</p>
+						<p>&nbsp;</p>
+						<p>
+							<span class = "JavaScript_reservado">const</span>
+							<span class = "variavel">WLM</span>
+							=
+							<span class = "JavaScript_reservado">new</span>
+							<span class = "classe">Menu</span>([
+						</p>
+						<p class = "nivel1">
+							{
+						</p>
+						<p class = "nivel2">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Navegar"</span>,
+						</p>
+						<p class = "nivel2">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">0</span>,
+						</p>
+						<p class = "nivel2">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Introdução"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel5">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#introducao"</span>;
+						</p>
+						<p class = "nivel4">
+							}
+						</p>
+						<p class = "nivel3">
+							},
+						</p>
+						
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Instalação"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel5">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#instalacao"</span>;
+						</p>
+						<p class = "nivel4">
+							}
+						</p>
+						<p class = "nivel3">
+							},
+						</p>
+						
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Utilização"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Objeto principal"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel7">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#objeto"</span>;
+						</p>
+						<p class = "nivel6">
+							}
+						</p>
+						<p class = "nivel5">
+							},
+						</p>
+						
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Função principal"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel7">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#funcao"</span>;
+						</p>
+						<p class = "nivel6">
+							}
+						</p>
+						<p class = "nivel5">
+							},
+						</p>
+						
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Função ativar"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel7">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#ativar"</span>;
+						</p>
+						<p class = "nivel6">
+							}
+						</p>
+						<p class = "nivel5">
+							},
+						</p>
+						
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Propriedade WLM_letra_auto"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel7">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#auto"</span>;
+						</p>
+						<p class = "nivel6">
+							}
+						</p>
+						<p class = "nivel5">
+							}
+						</p>
+						
+						<p class = "nivel4">
+							]
+						</p>
+						<p class = "nivel3">
+							},
+						</p>
+						
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Palavras reservadas"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel5">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#reservadas"</span>;
+						</p>
+						<p class = "nivel4">
+							}
+						</p>
+						<p class = "nivel3">
+							},
+						</p>
+						
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Alterações"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel5">
+							<span class = "variavel">location</span>.<span class = "atributo">href</span>
+							=
+							<span class = "texto">"#alteracoes"</span>;
+						</p>
+						<p class = "nivel4">
+							}
+						</p>
+						<p class = "nivel3">
+							},
+						</p>
+						
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Voltar"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">atalho</span>
+							: [<span class = "numero">36</span>],
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel5">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://github.com/RandomPianist?tab=repositories"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel4">
+							},
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">destacado</span>
+							:
+							<span class = "booleano">true</span>
+						</p>
+						<p class = "nivel3">
+							}
+						</p>
+						<p class = "nivel2">
+							]
+						</p>
+						<p class = "nivel1">
+							},
+						</p>
+						
+						<p class = "nivel1">
+							{
+						</p>
+						<p class = "nivel2">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Redes"</span>,
+						</p>
+						<p class = "nivel2">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">0</span>,
+						</p>
+						<p class = "nivel2">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"GitHub"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">3</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Repositórios"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel7">
+							{
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Bibliotecas"</span>,
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						
+						<p class = "nivel9">
+							{
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"CombinarTeclas"</span>,
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel11">
+							{
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Repositório"</span>,
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel13">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://github.com/RandomPianist/combinarTeclas"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel12">
+							}
+						</p>
+						<p class = "nivel11">
+							},
+						</p>
+						<p class = "nivel11">
+							{
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Explicação"</span>,
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel13">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://randompianist.github.io/combinarTeclas"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel12">
+							}
+						</p>
+						<p class = "nivel11">
+							}
+						</p>
+						<p class = "nivel10">
+							]
+						</p>
+						<p class = "nivel9">
+							},
+						</p>
+						
+						<p class = "nivel9">
+							{
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"WindowsLikeMenu"</span>,
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel11">
+							{
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Repositório"</span>,
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel13">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://github.com/RandomPianist/windowsLikeMenu"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel12">
+							},
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">desativado</span>
+							:
+							<span class = "booleano">true</span>
+						</p>
+						<p class = "nivel11">
+							},
+						</p>
+						<p class = "nivel11">
+							{
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Explicação"</span>,
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel13">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://randompianist.github.io/windowsLikeMenu"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel12">
+							},
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">desativado</span>
+							:
+							<span class = "booleano">true</span>
+						</p>
+						<p class = "nivel11">
+							}
+						</p>
+						<p class = "nivel10">
+							]
+						</p>
+						<p class = "nivel9">
+							},
+						</p>
+						
+						<p class = "nivel9">
+							{
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"JanelaPersonalizada"</span>,
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel11">
+							{
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Repositório"</span>,
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel13">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://github.com/RandomPianist/JanelaPersonalizada"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel12">
+							}
+						</p>
+						<p class = "nivel11">
+							},
+						</p>
+						<p class = "nivel11">
+							{
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Explicação"</span>,
+						</p>
+						<p class = "nivel12">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel13">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://randompianist.github.io/JanelaPersonalizada"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel12">
+							}
+						</p>
+						<p class = "nivel11">
+							}
+						</p>
+						<p class = "nivel10">
+							]
+						</p>
+						<p class = "nivel9">
+							}
+						</p>
+						
+						<p class = "nivel8">
+							]
+						</p>
+						<p class = "nivel7">
+							},
+						</p>
+						
+						<p class = "nivel7">
+							{
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Puzzle"</span>,
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">0</span>,
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">atalho</span>
+							: [<span class = "numero">16</span>,
+							<span class = "numero">80</span>]
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel9">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://randompianist.github.io/puzzle"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel8">
+							}
+						</p>
+						<p class = "nivel7">
+							}
+						</p>
+						<p class = "nivel6">
+							]
+						</p>
+						<p class = "nivel5">
+							},
+						</p>	
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Forks"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						
+						<p class = "nivel7">
+							{
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Line Chart"</span>,
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel9">
+							{
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Repositório"</span>
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel11">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://github.com/RandomPianist/oi.linechart.js"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel10">
+							}
+						</p>
+						<p class = "nivel9">
+							},
+						</p>
+						<p class = "nivel9">
+							{
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Explicação"</span>
+						</p>
+						<p class = "nivel10">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel11">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://randompianist.github.io/oi.linechart.js"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel10">
+							}
+						</p>
+						<p class = "nivel9">
+							}
+						</p>
+						<p class = "nivel8">
+							]
+						</p>
+						<p class = "nivel7">
+							},
+						</p>
+						
+						<p class = "nivel7">
+							{
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Gwent 3.1"</span>,
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">0</span>,
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">atalho</span>
+							: [<span class = "numero">16</span>,
+							<span class = "numero">71</span>],
+						</p>
+						<p class = "nivel8">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel9">
+							<span class = "variavel">window</span>.<span class = "JavaScript_funcao">open</span>(<span class = "texto">"https://randompianist.github.io/gwent-classic-v3.1"</span>,
+							<span class = "texto">"_blank"</span>);
+						</p>
+						<p class = "nivel8">
+							}
+						</p>
+						<p class = "nivel7">
+							}
+						</p>
+						<p class = "nivel6">
+							]
+						</p>
+						<p class = "nivel5">
+							}
+						</p>
+						<p class = "nivel4">
+							]
+						</p>
+						<p class = "nivel3">
+							},
+						</p>
+						<p class = "nivel3">
+							{
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Sobre"</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">0</span>,
+						</p>
+						<p class = "nivel4">
+							<span class = "atributo">filhos</span>
+							: [
+						</p>
+						<p class = "nivel5">
+							{
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">texto</span>
+							:
+							<span class = "texto">"Sobre o Windows Like Menu"</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">letraAlt</span>
+							:
+							<span class = "numero">2</span>,
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">funcao</span>
+							:
+							<span class = "JavaScript_reservado">function</span>() {
+						</p>
+						<p class = "nivel7">
+							<span class = "JavaScript_funcao">alert</span>(<span class = "texto">"Essa biblioteca tem a finalidade de simular um menu como o do S.O. Windows, incluindo comandos de atalho e seleção com o teclado."</span>);
+						</p>
+						<p class = "nivel6">
+							},
+						</p>
+						<p class = "nivel6">
+							<span class = "atributo">atalho</span>
+							: [<span class = "numero">16</span>,
+							<span class = "numero">65</span>]
+						</p>
+						<p class = "nivel5">
+							}
+						</p>
+						<p class = "nivel4">
+							]
+						</p>
+						<p class = "nivel3">
+							}
+						</p>
+						<p class = "nivel2">
+							]
+						</p>
+						<p class = "nivel1">
+							}
+						</p>
+						<p>
+							]);
+						</p>
+					</div>
+				</div>
+			</details>
+			<h3>
+				<a name = "ativar">3.3. Função ativar</a>
+			</h3>
+			<p>
+				É disponibilizada a função
+				<span class = "lib_funcao">ativar</span>,
+				que tem a função de ativar ou inativar os itens do menu.
+				Sua sintaxe é a seguinte:
+			</p>
+			<details>
+				<summary>Ver código</summary>
+				<div class = "codigo">
+					<div>
+						<p>
+							<span class = "variavel">WLM</span>.<span class = "lib_funcao">ativar</span>(<span class = "parametro">id</span>,
+							<span class = "parametro">ativo</span>);
+						</p>
+					</div>
+				</div>
+			</details>
+			<p>
+				Onde
+				<span class = "parametro">id</span>
+				é uma string contendo números em base 0 separados por underlines que representam cada um dos itens do menu e
+				<span class = "parametro">ativo</span>
+				é um boolean que determina se o item deve ser ativado caso 
+				<span class = "booleano">true</span>
+				ou inativado caso
+				<span class = "booleano">false</span>.
+			</p>
+			<p>
+				O botão abaixo a utiliza para alternar a ativação do item
+				<span class = "texto">1_1</span>
+				do menu, isto é, Redes > Outras.
+			</p>
+			<input type = "button" style = "width:100px" onclick = "ativo=this.value=='Desativar';this.value=!ativo?'Desativar':'Ativar';WLM.ativar('1_1', !ativo);" value = "Desativar" />
+			<p>Observe o código deste botão:</p>
+			<details>
+				<summary>Ver código</summary>
+				<div class = "codigo">
+					<div>
+						<p>
+							<span class = "variavel">ativo</span>
+							=
+							<span class = "JavaScript_reservado">this</span>.<span class = "atributo">value</span>
+							==
+							<span class = "texto">"Desativar"</span>;
+						</p>
+						<p>
+							<span class = "JavaScript_reservado">this</span>.<span class = "atributo">value</span>
+							= !<span class = "variavel">ativo</span>
+							?
+							<span class = "texto">"Desativar"</span>
+							:
+							<span class = "texto">"Ativar"</span>;
+						</p>
+						<p>
+							<span class = "variavel">WLM</span>.<span class = "lib_funcao">ativar</span>(<span class = "texto">"1_1"</span>,
+							!<span class = "variavel">ativo</span>);
+						</p>
+					</div>
+				</div>
+			</details>
+			<h3>
+				<a name = "auto">3.4. Propriedade WLM_letra_auto</a>
+			</h3>
+			<p>
+				A propriedade
+				<span class = "variavel">WLM_letra_auto</span>
+				é um boolean que, caso tenha seu valor alterado para
+				<span class = "booleano">true</span>
+				<b>ANTES</b>
+				da construção do objeto
+				<span class = "variavel">WLM</span>,
+				fará com que a construção do menu ignore todos os índices estabelecidos na propriedade
+				<span class = "atributo">letraAlt</span>
+				de cada elemento e crie para ele um novo índice.
+			</p>
+			<p>
+				O novo indíce automático é baseado na primeira letra do texto do menu.
+				Isso é feito para todos os elementos.
+				Portanto, caso a próxima primeira letra seja uma repetição, o sistema tentará aplicar o índice à segunda letra e assim por diante.
+				Isso resultará em erro e o menu não será construído caso, ao chegar ao fim do texto do elemento, nenhuma letra tenha sido encontrada disponível para se aplicar o índice.
+				Portanto, recomenda-se utilizar o padrão
+				<span class = "booleano">false</span>
+				(não sendo necessária a declaração) para menus com muitos elementos ou para menus cujos elementos tenham textos relativamente curtos.
+			</p>
+		</div>
+		<hr />
+		<div class = "bloco">
+			<h1>
+				<a name = "reservadas">4. Palavras reservadas</a>
+			</h1>
+			<p>Essa biblioteca reserva para si as palavras-chave:</p>
+			<ul class = "reservadas">
+				<li>
+					<b>Como ids HTML:</b>
+					<ul>
+						<li>
+							<span>menu</span>
+						</li>
+						<li>
+							<span>menuDiv</span>
+						</li>
+						<li>
+							<span>menuRes</span>
+						</li>
+						<li>
+							<span>menuCobrir</span>
+						</li>
+						<li>
+							<span>menu_alt</span>
+						</li>
+						<li>
+							<span>menu_delHover</span>
+						</li>
+						<li>
+							<span>menuC</span> e variantes por ele prefixadas
+						</li>
+						<li>
+							<span>menu_abrir</span> e variantes por ele prefixadas
+						</li>
+						<li>
+							<span>menu_submenu</span> e variantes por ele prefixadas
+						</li>
+						<li>
+							<span>menu_m</span> e variantes por ele prefixadas
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>Como classes CSS:</b>
+					<ul>
+						<li>menu</li>
+						<li>menuRes</li>
+					</ul>
+				</li>
+				<li>
+					<b>Como constantes globais:</b>
+					<ul>
+						<li>CT</li>
+						<li>WLM</li>
+					</ul>
+				</li>
+				<li>
+					<b>Como classes JavaScript:</b>
+					<ul>
+						<li>CombinarTeclas</li>
+						<li>Menu</li>
+					</ul>
+				</li>
+				<li>
+					<b>Como variável global:</b>
+					<ul>
+						<li>WLM_letra_auto</li>
+					</ul>
+				</li>
+			</ul>
+			<p>E reescreve as funções:</p>
+			<ul>
+				<li>
+					<b>window.onkeydown</b>
+				</li>
+				<li>
+					<b>window.onkeyup</b>
+				</li>
+				<li>
+					<b>window.onclick</b>
+				</li>
+				<li>
+					<b>window.onresize</b>
+				</li>
+				<li>
+					<b>window.onload</b>
+				</li>
+			</ul>
+		</div>
+		<hr />
+		<div class = "bloco">
+			<h1>
+				<a name = "alteracoes">5. Alterações</a>
+			</h1>
+			<ul>
+				<li>Inclusão de validação dos parâmetros</li>
+				<li>Inclusão da propriedade WLM_letra_auto</li>
+				<li>Inclusão de letraAlt para submenus com filhos</li>
+				<li>Melhoria de dimensionamento em janelas sem atalhos ou filhos</li>
+				<li>Diminuição do uso de memória</li>
+				<li>Permissão de redimensionamento da janela sem ocorrer perda de dados</li>
+				<li>Diminuição no número de palavras reservadas</li>
+				<li>
+					Melhoria na escrita de funções, permissão de
+					<b>function</b>
+					em oposição ao anterior
+					<b>string</b>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
