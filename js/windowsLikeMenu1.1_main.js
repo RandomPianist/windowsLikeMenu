@@ -548,6 +548,14 @@ function Menu(dados) {
 		else funcao(menuNoF[menuSelecionado]);
 	}
 	
+	const corrigeEstilo = function() {
+		try {
+			let estilo = document.getElementsByClassName("menuRes")[0].style;
+			if (!menuAberto) el.zIndex = 1;
+			else estilo.removeProperty("z-index");
+		} catch(err) {}
+	}
+	
 	let menuCriar = function(arr, sub, recuo, nivel, idsub, larguras) {
 		let aux, span;
 		let cont = 0;
@@ -1057,14 +1065,13 @@ function Menu(dados) {
 		if (!erroG) try {
 			CT_menu.keyup(e);
 		} catch(err) {}
+		corrigeEstilo();
 		return menuAberto;
 	}
 	
 	this.click = function(e) {
-		if (!document.getElementById("menu").contains(e.target) && menuAberto && !erroG) {
-			menuFechar();
-			that.end();
-		}
+		if (!document.getElementById("menu").contains(e.target) && menuAberto && !erroG) that.end();
+		corrigeEstilo();
 	}
 	
 	this.exec = function(pos, noF) {
