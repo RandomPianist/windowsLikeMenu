@@ -550,8 +550,8 @@ function Menu(dados) {
 	
 	const corrigeEstilo = function() {
 		try {
-			let estilo = document.getElementsByClassName("menuRes")[0].style;
-			if (!menuAberto) el.zIndex = 1;
+			let estilo = document.getElementById("menuRes").style;
+			if (menuAberto) estilo.zIndex = 1;
 			else estilo.removeProperty("z-index");
 		} catch(err) {}
 	}
