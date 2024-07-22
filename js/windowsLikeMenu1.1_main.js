@@ -550,9 +550,7 @@ function Menu(dados) {
 	
 	const corrigeEstilo = function() {
 		try {
-			let estilo = document.getElementById("menuRes").style;
-			if (menuAberto) estilo.zIndex = 1;
-			else estilo.removeProperty("z-index");
+			document.getElementById("menuRes").style.zIndex = menuAberto ? "-1" : "1";
 		} catch(err) {}
 	}
 	
@@ -804,7 +802,7 @@ function Menu(dados) {
 				".menuRes {" +
 					"overflow-y:auto;" +
 					"overflow-x:hidden;" +
-					"z-index:-1;" +
+					"z-index:1;" +
 					"margin-top:27px" +
 				"}" +
 				".menu {" +
